@@ -158,7 +158,9 @@ class Lesson extends Base
 
         }
         $get = $this->request->get();
-        $data = Db::name($this->table)->where('lesson_id',$get['lesson_id'])->find();
+        $data = Db::name($this->table)
+            ->field('lesson_id,lesson_date,lesson_logo,lesson_name,lesson_name_eng,lesson_desc')
+            ->where('lesson_id',$get['lesson_id'])->find();
         $this->assign([
             'data'=>$data,
             'lesson_date'=>$get['lesson_date']
@@ -190,7 +192,9 @@ class Lesson extends Base
 
         }
         $get = $this->request->get();
-        $data = Db::name($this->table)->where('lesson_id',$get['lesson_id'])->find();
+        $data = Db::name($this->table)
+            ->field('lesson_id,lesson_date,lesson_highlights,lesson_pipeline,lesson_movement')
+            ->where('lesson_id',$get['lesson_id'])->find();
         $this->assign([
             'data'=>$data,
             'lesson_date'=>$get['lesson_date']
@@ -203,6 +207,7 @@ class Lesson extends Base
         if ($this->request->isPost()){
             $post = $this->request->post();
 //            return $post;
+            //新的课程
             if (empty($post['lesson_id'])){
                 $post['lesson_id'] = Db::name($this->table)->insertGetId(['lesson_date'=>$post['lesson_date']]);
             }
@@ -268,6 +273,79 @@ class Lesson extends Base
             'data'=>$data,
             'lesson_date'=>$get['lesson_date'],
             'lesson_id'=>$get['lesson_id'],
+        ]);
+        return view();
+    }
+
+
+    public function add_action(){
+        if ($this->request->isPost()){
+            $post = $this->request->post();
+            foreach ([1,2,3] as $v){
+                if ($post[$v]){
+                    foreach ($post[$v] as $k=>$vo){
+                        $post[$v][$k]['tv_type'] = $post['lesson_ac_tv'.$v.'type'];
+                    }
+                }else{
+                    $post[$v] = [];
+                }
+            }
+
+            $data = [
+                'lesson_date'=>$post['lesson_date'],
+                'lesson_movement'=>$post['lesson_movement'],
+                'lesson_ac_member'=>$post['lesson_ac_member'],
+                'lesson_ac_steps'=>$post['lesson_ac_steps'],
+                'lesson_ac_pods'=>$post['lesson_ac_pods'],
+                'lesson_ac_rest'=>$post['lesson_ac_rest'],
+                'lesson_ac_total'=>$post['lesson_ac_total'],
+                'lesson_ac_sets'=>$post['lesson_ac_sets'],
+                'lesson_ac_laps'=>$post['lesson_ac_laps'],
+                'lesson_ac_tv1type'=>$post['lesson_ac_tv1type'],
+                'lesson_ac_tv2type'=>$post['lesson_ac_tv2type'],
+                'lesson_ac_tv3type'=>$post['lesson_ac_tv3type'],
+            ];
+            try{
+                if ($post['lesson_id']){
+                    Db::name($this->table)->where(['lesson_id'=>$post['lesson_id'],'lesson_date'=>$post['lesson_date']])->update($data);
+                }else{
+                    $post['lesson_id'] = Db::name($this->table)->insertGetId($data);
+                }
+                //更新lesson_action表
+                Db::name('lesson_action')->where('lid',$post['lesson_id'])->delete();
+
+                $action =  array_merge($post['1'],$post['2'],$post['3']);
+
+                if ($action){
+                    foreach ($action as $key=>$value){
+                        $action[$key]['lid'] = $post['lesson_id'];
+                    }
+                    Db::name('lesson_action')->insertAll($action);
+                }
+
+            }catch (Exception $e){
+                $this->error('数据保存失败！');
+            }
+            $this->success('保存成功！');
+
+            return $post;
+        }
+        $get = $this->request->get();
+        if (empty($get['lesson_id'])){
+            $data = [];
+        }else{
+            $data = Db::name($this->table)
+                ->field('lesson_movement,lesson_ac_member,lesson_ac_steps,lesson_ac_pods,lesson_ac_rest,lesson_ac_total,lesson_ac_sets,lesson_ac_laps,lesson_ac_tv1type,lesson_ac_tv2type,lesson_ac_tv3type')
+                ->where('lesson_id',$get['lesson_id'])->find();
+            $data['tv1'] = Db::name('lesson_action')->where(['lid'=>$get['lesson_id'],'tv'=>1])->select();
+            $data['tv2'] = Db::name('lesson_action')->where(['lid'=>$get['lesson_id'],'tv'=>2])->select();
+            $data['tv3'] = Db::name('lesson_action')->where(['lid'=>$get['lesson_id'],'tv'=>3])->select();
+        }
+
+        $this->assign([
+            'data'=>$data,
+            'lesson_date'=>$get['lesson_date'],
+            'lesson_id'=>$get['lesson_id']
         ]);
         return view();
     }
