@@ -1,0 +1,108 @@
+<div class="layui-form" id="FormIdA" url="{:url('')}">
+    <input type="hidden" name="lesson_id" value="{$data.lesson_id}">
+    <input type="hidden" name="lesson_date" value="{$data.lesson_date?:$lesson_date}">
+
+    <div class="layui-form-item layui-row ">
+        <label class="layui-col-md1" style="text-align: right">强调视频 <br><span class="layui-word-aux">（HIGHLIGHTS）</span></label>
+        <div class="layui-col-md4">
+            <button type="button" class="layui-btn" id="video"><i class="layui-icon layui-icon-video"></i>上传视频</button>
+            <input type="hidden" name="lesson_highlights" value="{$data.lesson_highlights}">
+            <br>
+            <video style="margin-top: 10px;" width="400px" height="200px" id="video_box" controls src="{$data.lesson_highlights}"></video>
+
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-row">
+        <label class="layui-col-md1" style="text-align: right">课程介绍视频 <br><span class="layui-word-aux">（PIPELINE）</span></label>
+        <div class="layui-col-md4">
+            <button type="button" class="layui-btn" id="video2"><i class="layui-icon layui-icon-video"></i>上传视频</button>
+            <input type="hidden" name="lesson_pipeline" value="{$data.lesson_pipeline}">
+            <br>
+            <video style="margin-top: 10px;" width="400px" height="200px" id="video_box2" controls src="{$data.lesson_pipeline}"></video>
+
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-row">
+        <label class="layui-col-md1" style="text-align: right">移动GIF <br><span class="layui-word-aux"></span></label>
+        <div class="layui-col-md4">
+            <button type="button" class="layui-btn" id="test2">图片上传</button>
+            <input type="hidden" name="lesson_movement" value="{$data.lesson_movement}">
+            <br>
+            <img class="upload-img" src="{$data.lesson_movement}" style="margin-top: 10px;" width="400px" height="200px" alt="预览图">
+        </div>
+    </div>
+
+    <hr>
+    <div class="layui-form-item layui-row ">
+        <label class="layui-form-label"></label>
+        <button class="layui-btn" lay-submit="save" lay-filter="save">保存</button>
+        <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+    </div>
+</div>
+<script>
+    layui.use(['form', 'common','jquery','upload','element','laydate'], function () {
+        var element = layui.element,
+            $ = layui.jquery,
+            form = layui.form,
+            common = layui.common,
+            layer = layui.layer,
+            upload = layui.upload,
+            laydate = layui.laydate;
+        form.render();
+
+        upload.render({
+            elem:'#video',
+            url:'/manage/thumb/upload',
+            accept: 'video',
+            done:function (res) {
+                $('#video_box').attr('src',res.url);
+                $('input[name="lesson_highlights"]').val(res.url);
+            }
+        })
+
+        upload.render({
+            elem:'#video2',
+            url:'/manage/thumb/upload',
+            accept: 'video',
+            done:function (res) {
+                $('#video_box2').attr('src',res.url);
+                $('input[name="lesson_pipeline"]').val(res.url);
+            }
+        })
+
+        //多图片上传
+        upload.render({
+            elem: '#test2'
+            ,url: '/manage/thumb/upload'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('.upload-img').attr('src', result);
+                });
+            }
+            ,done: function(res){
+                //上传完毕
+                $('#test2').siblings('input[type="hidden"]').val(res.url);
+            }
+        });
+
+        form.on('submit(save)',function (data) {
+            var index = layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
+            $.ajax({
+                url:'add_ctrl',
+                type:'post',
+                data:data.field,
+                dataType: "json",
+                success:function (res) {
+                    layer.close(index);
+                    layer.msg(res.msg,{time:2000},function () {
+                        $('.layui-this').trigger('click');
+                    });
+                }
+            })
+        })
+    });
+
+</script>

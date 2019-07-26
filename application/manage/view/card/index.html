@@ -1,0 +1,63 @@
+{include file="layout/header" /}
+<body class="childrenBody" style="background-color:#F2F2F2;">
+	<div class="layui-card">
+		<div class="layui-card-header">会员卡设置</div>
+		<div class="layui-card-body">
+			<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+				<ul class="layui-tab-title">
+					<li class="layui-this" data-field="card_type" data-value="">全部<span class="layui-badge">{$count}</span></a></li>
+					<li data-field="card_type" data-value="1">时间卡<span class="layui-badge">{$tab1}</span></li>
+					<li data-field="card_type" data-value="2">充值计划<span class="layui-badge">{$tab2}</span></li>
+				</ul>
+				<div class="layui-tab-content"></div>
+			</div>
+			<form class="layui-form search-form" onclick="return false;">
+				<div class="layui-form-item">
+					<div class="layui-input-inline">
+						<input name="create_at" id="create_at" value="" autocomplete="off" placeholder="请选择创建时间" class="layui-input">
+					</div>
+					<div class="layui-input-inline">
+						<select name="data-field" lay-verify="">
+							<option value="">请选择查询内容</option>
+							<option value="card_name">名称</option>
+							<option value="card_addr">英文名称</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" name="data-value" placeholder="请输入查询信息" autocomplete="off" class="layui-input">
+					</div>
+
+					<div class="layui-input-inline">
+						<button class="layui-btn search">搜索</button>
+						<button class="layui-btn reset">重置</button>
+					</div>
+					<div class="layui-dropdown dropdown-right" style="float:right;">
+						<button class="layui-btn">添加会员卡</button>
+						<ul>
+							<li>
+								<a href="javascript:;" class="create" data-value="1">时间卡</a>
+							</li>
+							<li>
+								<a href="javascript:;" class="create" data-value="2">充值计划</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</form>
+			<table id="tableList" lay-filter="tableList"></table>
+
+			<script type="text/html" id="action">
+
+				<a class="layui-btn layui-btn-xs" lay-event="edit" >编辑</a>
+
+				<!-- <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已启用</a> -->
+
+				<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+			</script>
+
+		</div>
+	</div>
+</body>
+<link href="__STATIC__/layui/modules/dropdown.css" rel="stylesheet" />
+
+<script type="text/javascript" src="__STATIC__admin/card.js" ></script>

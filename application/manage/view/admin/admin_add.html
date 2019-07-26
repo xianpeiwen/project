@@ -1,0 +1,185 @@
+{include file="layout/header" /}
+<body class="childrenBody">
+
+<div class="layui-form" style="width:80%;" id="FormIdA" url="{:url('manage/Admin/admin_add_form')}">
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">头像</label>
+		<div class="layui-input-block">
+			<div class="user_pic" id="editimg" style="margin: 10px;width: 202px;height: 202px;border: 1px solid #ccc">
+				<!-- <div id="editimg" style=" width: 200px;height: 200px;background:url(/images/{$img.image_path}{$res.img.image_name});background-size:contain" class=" btn-primary" data-toggle="modal" data-target="#avatar-modal"></div> -->
+				<img id="srcimgurl" style="width: 200px;height: 200px" src="/images/{$admin.image_path}{$admin.image_name}" alt="">
+				<input type="hidden" class="layui-input" id="imgShow"  name="imgShow">
+			</div>
+		</div>
+	</div>
+	<!-- <div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">管理组</label>
+		<div class="layui-input-block">
+			<select name="user_pid" class="user_pid" lay-filter="user_pid">
+				{volist name="auth_group" id="vo"}
+
+					<option value="{$vo.id}" {if condition="$vo.id eq $admin.group_id"} selected{/if}>{$vo.title}</option>
+
+					{volist name="vo._child" id="v"}
+
+						<option value="{$v.id}" {if condition="$v.id eq $admin.group_id"} selected{/if}>--------{$v.title}</option>
+
+						{volist name="v._child" id="vc"}
+
+							<option value="{$vc.id}" {if condition="$vc.id eq $admin.group_id"} selected{/if}>----------------{$vc.title}</option>
+
+							{volist name="vc._child" id="vv"}
+
+								<option value="{$vv.id}" {if condition="$vv.id eq $admin.group_id"} selected{/if}>------------------------{$vv.title}</option>
+
+							{/volist}
+
+						{/volist}
+
+					{/volist}
+
+				{/volist}
+			</select>
+		</div>
+	<!--</div> &ndash;&gt;-->
+	<!--<div class="layui-form-item">-->
+		<!--<label class="layui-form-label">选择权限组</label>-->
+		<!--<div class="layui-input-block">-->
+			<!--<div id="LAY-auth-tree-index"></div>-->
+		<!--</div>-->
+	<!--</div>-->
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<label class="layui-form-label">用户名</label>
+
+		<div class="layui-input-block">
+
+			<input type="text" class="layui-input admin_name"  name="admin_name" placeholder="请输入用户名" lay-verify="" value="{$admin.admin_name}">
+
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<label class="layui-form-label">手机号码</label>
+
+		<div class="layui-input-block">
+
+			<input type="text" name="admin_phone" class="layui-input admin_phone" lay-verify="admin_phone" placeholder="请输入您的手机号码（用于登录）" value="{$admin.admin_phone}">
+
+		</div>
+	</div>
+
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<label class="layui-form-label">邮箱</label>
+
+		<div class="layui-input-block">
+
+			<input type="text" name="admin_email" class="layui-input admin_email" lay-verify="admin_email" placeholder="请输入邮箱（用于登录）" value="{$admin.admin_email}">
+
+		</div>
+	</div>
+	
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<label class="layui-form-label">登录密码</label>
+
+		<div class="layui-input-block">
+
+			<input type="password" name="admin_pass"  class="layui-input admin_pass" lay-verify="" placeholder="请输入登录密码（用于登录、编辑时不更改请留空）">
+
+		</div>
+	</div>
+
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<label class="layui-form-label">状态</label>
+
+		<div class="layui-input-block">
+
+			<select name="admin_status" class="admin_status" lay-filter="admin_status" >
+
+				<option value="1" {if condition="$admin.admin_status eq 1"}selected{/if}>正常使用</option>
+
+				<option value="2" {if condition="$admin.admin_status eq 2"}selected{/if}>限制使用</option>
+
+			</select>
+
+		</div>
+	</div>
+
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<label class="layui-form-label">排序</label>
+
+		<div class="layui-input-block">
+
+			<input type="text" class="layui-input admin_sort"  name="admin_sort" placeholder="请输入排序" lay-verify="admin_sort"  value="{$admin.admin_sort}">
+
+		</div>
+	</div>
+	<input type="hidden" class="layui-input Id"  name="ids" value="{$admin.admin_id}">
+
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<div class="layui-input-block">
+
+			<button class="layui-btn layui-btn-sm" lay-submit="addUser" lay-filter="addUser">立即添加</button>
+
+			<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+
+		</div>
+	</div>
+</div>
+	<script>
+
+	    layui.use(['form','croppers','common','jquery'], function () {
+	    	var $ = layui.jquery
+            ,form = layui.form
+            ,croppers = layui.croppers
+            ,common = layui.common
+            ,layer= layui.layer;
+            //创建一个头像上传组件
+	        croppers.render({
+	            elem: '#editimg'
+	            ,saveW:200     //保存宽度
+	            ,saveH:200
+	            ,mark:1/1    //选取比例
+	            ,area:['40%', '60%']  //弹窗宽度
+	            ,format:'base64'				//直接上传：upload  ，返回 base64编码：base64
+	            // ,url: "uploadImg"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+	            ,done: function(url){ //上传完毕回调
+	                $("#imgShow").val(url);
+	                $("#srcimgurl").attr('src',url);
+	            }
+	        });
+	        var id = $('.Id').val();
+	     
+	        if( id == ''){
+				id = '';
+			}
+	        $.ajax({
+				url: 'admin_auth_list?id='+id,
+				dataType: 'json',
+				success: function(data){
+					console.log(data)
+					// 渲染时传入渲染目标ID，树形结构数据（具体结构看样例，checked表示默认选中），以及input表单的名字
+					common.render('#LAY-auth-tree-index', data.data.trees, {inputname: 'group_id[]', layfilter: 'lay-check-auth', openall: false});
+
+					// 监听自定义lay-filter选中状态，PS:layui现在不支持多次监听，所以扩展里边只能改变触发逻辑，然后引起了事件冒泡延迟的BUG，要是谁有好的建议可以反馈我
+					form.on('checkbox(lay-check-auth)', function(data){
+						// 注意这里：需要等待事件冒泡完成，不然获取叶子节点不准确。
+						setTimeout(function(){
+							// 获取选中的叶子节点
+							var leaf = common.getLeaf('#LAY-auth-tree-index');
+							
+						}, 100);
+					});
+				}
+			})
+	        common.JKFormSubmit('FormIdA','addUser');
+	    });
+	</script>
+</body>
+
+</html>

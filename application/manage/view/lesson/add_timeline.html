@@ -1,0 +1,377 @@
+<div class="layui-form" id="FormIdA" url="{:url('')}">
+    <input type="hidden" name="lesson_id" value="{$lesson_id}">
+    <input type="hidden" name="lesson_date" value="{$lesson_date}">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            <button class="layui-btn layui-btn-sm add">添加<i class="layui-icon layui-icon-add-1"></i></button>
+        </div>
+
+        <div class="layui-card-body">
+            <ul class="layui-timeline">
+                {foreach $data as $k=>$v}
+                <li class="layui-timeline-item" data-sort="{$k+1}">
+                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                    <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">
+                            <div class="layui-input-inline" style="width: 80px;">
+                                <input type="text" name="{$k+1}[line_time]" placeholder="时长" autocomplete="off" class="layui-input timeline_time" value="{$v.line_time}">
+                            </div>
+                            <div class="layui-input-inline" style="width: 500px;">
+                                <select name="{$k+1}[line_type]" lay-verify="" data-type="{$v.line_type}">
+                                    <option value="" {if $v.line_type==''}selected{/if}>请选择类型</option>
+                                    <option value="1" {if $v.line_type=='1'}selected{/if}>CLASS INTRO</option>
+                                    <option value="2" {if $v.line_type=='2'}selected{/if}>WORKOUTS</option>
+                                    <option value="3" {if $v.line_type=='3'}selected{/if}>PREPARE FOR WARM UP</option>
+                                    <option value="4" {if $v.line_type=='4'}selected{/if}>WARM UP</option>
+                                    <option value="5" {if $v.line_type=='5'}selected{/if}>FULL SCREN COUNTDOWN</option>
+                                    <option value="6" {if $v.line_type=='6'}selected{/if}>TIMER</option>
+                                    <option value="7" {if $v.line_type=='7'}selected{/if}>HYDRATE</option>
+                                    <option value="8" {if $v.line_type=='8'}selected{/if}>GREAT JOB GRAPHIC</option>
+                                </select>
+                            </div>
+                            <button class="layui-btn layui-btn-sm layui-btn-danger del"><i class="layui-icon layui-icon-delete"></i></button>
+                        </h3>
+                        <div class="type-cover">
+                            {switch name="v.line_type"}
+                            {case value="1|4"}
+                            <blockquote class="layui-elem-quote">
+                                {if !empty($v.line_detail)}
+                                {foreach $v.line_detail as $ko=>$vo}
+                                <!--一个视频-->
+                                <div class="layui-card layui-inline" style="text-align: center" data-sort="{$ko+1}">
+                                    <div class=""><video controls width="300px"  height="150px" src="{$vo.video_url?:''}"></video></div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">视频名称{$ko+1}：</label>
+                                        <div class="layui-input-inline">
+                                            <input type="hidden" name="{$k+1}[line_detail][{$ko+1}][video_url]" value="{$vo.video_url?:''}">
+                                            <input type="text" name="{$k+1}[line_detail][{$ko+1}][name]" value="{$vo.name?:''}" class="layui-input" placeholder="视频名称">
+                                        </div>
+                                    </div>
+                                    <button class="layui-btn layui-btn-sm layui-btn-danger video-del">删除视频</button>
+                                </div>
+
+                                {/foreach}
+                                {/if}
+                                <button type="button" class="layui-btn upload-video"><i class="layui-icon layui-icon-video"></i>上传视频</button>
+                            </blockquote>
+                            {/case}
+                            {case value="2|4"}
+                            <blockquote class="layui-elem-quote">
+                                {if !empty($v.line_detail)}
+                                {foreach $v.line_detail as $ko=>$vo}
+                                <div class="layui-form-item" data-sort="{$ko+1}">
+                                    <div class="layui-inline">
+                                        <div class="layui-input-inline" style="width: 200px;">
+                                            <input type="text" name="{$k+1}[line_detail][{$ko+1}][name]" autocomplete="off" class="layui-input" value="{$vo.name}">
+                                        </div>
+                                        <div class="layui-form-mid">：</div>
+                                        <div class="layui-input-inline" style="width: 200px;">
+                                            <input type="text" name="{$k+1}[line_detail][{$ko+1}][value]"  autocomplete="off" class="layui-input"  value="{$vo.value}">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline layui-btn-group">
+                                        <button class="layui-btn layui-btn-sm layui-btn-danger del2"><i class="layui-icon layui-icon-delete"></i></button>
+                                        <button class="layui-btn layui-btn-sm add2"><i class="layui-icon layui-icon-add-1"></i></button>
+                                    </div>
+                                </div>
+                                {/foreach}
+                                {/if}
+                            </blockquote>
+                            {/case}
+                            {case value="3|8"}
+                            <blockquote class="layui-elem-quote">
+                                <div class="layui-card-body" style="width: 300px;height: 150px;background-color: #2e6da4;text-align: center;color: white;font-size: 30px;border-radius: 5px;display: table-cell;vertical-align: middle;">
+                                    {$v.line_detail}
+                                </div>
+                            </blockquote>
+                            {/case}
+                            {case value="5"}
+                            <blockquote class="layui-elem-quote">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">时间：</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="{$k+1}[line_detail]" value="{$v.line_detail}" class="layui-input" placeholder="秒">
+                                    </div>
+                                </div>
+                            </blockquote>
+                            {/case}
+                            {case value="6"}
+                            <blockquote class="layui-elem-quote">
+                                <textarea name="{$k+1}[line_detail]" class="layui-textarea" placeholder="请输入" style="width: 500px">{$v.line_detail}</textarea>
+                            </blockquote>
+                            {/case}
+
+                            {case value="7"}
+                            <blockquote class="layui-elem-quote">
+                                <div class="layui-card-body" style="width: 300px;height: 150px;background-color: #2e6da4;text-align: center;color: white;font-size: 30px;border-radius: 5px;display: table-cell;vertical-align: middle;">
+                                    <img src="{$v.line_detail}" width="100px" height="100px" data-tips-image>
+                                </div>
+                            </blockquote>
+                            {/case}
+
+                            {default /}
+
+                            {/switch}
+                        </div>
+
+
+                    </div>
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+    </div>
+
+    <hr>
+    <div class="layui-form-item layui-row ">
+        <label class="layui-form-label"></label>
+        <button class="layui-btn" lay-submit="save" lay-filter="save">保存</button>
+        <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+    </div>
+</div>
+
+<script>
+    layui.use(['form', 'common','jquery','upload','element','laydate'], function () {
+        var element = layui.element,
+            $ = layui.jquery,
+            form = layui.form,
+            common = layui.common,
+            layer = layui.layer,
+            upload = layui.upload,
+            laydate = layui.laydate;
+        form.render();
+
+        //时间线数量
+        var key = $('.layui-timeline-item').length;
+
+        //添加时间线
+        $('.add').on('click',function () {
+            key++;
+            var html = `<li class="layui-timeline-item" data-sort="${key}">
+                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                    <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">
+                            <div class="layui-input-inline" style="width: 80px;">
+                                <input type="text" name="${key}[line_time]" placeholder="时长" autocomplete="off" class="layui-input timeline_time${key}" >
+                            </div>
+                            <div class="layui-input-inline" style="width: 500px;">
+                                <select name="${key}[line_type]" lay-verify="">
+                                    <option value="">请选择类型</option>
+                                    <option value="1">CLASS INTRO</option>
+                                    <option value="2">WORKOUTS</option>
+                                    <option value="3">PREPARE FOR WARM UP</option>
+                                    <option value="4">WARM UP</option>
+                                    <option value="5">FULL SCREN COUNTDOWN</option>
+                                    <option value="6">TIMER</option>
+                                    <option value="7">HYDRATE</option>
+                                    <option value="8">GREAT JOB GRAPHIC</option>
+                                </select>
+                            </div>
+                            <button class="layui-btn layui-btn-sm layui-btn-danger del"><i class="layui-icon layui-icon-delete"></i></button>
+                        </h3>
+                        <div class="type-cover"></div>
+                    </div>
+                </li>`;
+            $('.layui-timeline').append(html);
+            form.render();
+            laydate.render({elem: '.timeline_time'+key,format:'mm:ss',type:'time'});
+        })
+
+        //删除时间线
+        $('.layui-timeline').on('click','.del',function () {
+            $(this).parents('li').remove();
+        })
+
+        //日期选择器
+        $('.timeline_time').each(function () {
+            laydate.render({elem: this,format:'mm:ss',type:'time'});
+        })
+
+        //监听类型选择
+        form.on('select', function(data){
+
+            // if (data.value==data.elem.dataset.type) {
+            //     data.othis.parents('.layui-timeline-content').find('.type-cover').html();
+            // }
+            //当前时间线编号
+            var line_sort = data.othis.parents('.layui-timeline-item').data('sort');
+
+            if(data.value==''){
+                data.othis.parents('.layui-timeline-content').find('.type-cover').html('');
+            }
+            // 视频类型
+            if (data.value==1 || data.value==4){
+                var _html = `<blockquote class="layui-elem-quote">
+
+                            <button type="button" class="layui-btn upload-video" ><i class="layui-icon layui-icon-video"></i>上传视频</button>
+                        </blockquote>`;
+                data.othis.parents('.layui-timeline-content').find('.type-cover').html(_html);
+                //实例动态添加的上传组件
+                data.othis.parents('.layui-timeline-content').find('.upload-video').one('mouseenter',function () {
+                    console.log('动态实例');
+                    uploadFun($(this));
+                })
+            }
+
+            if (data.value==2) {
+                var _html = `<blockquote class="layui-elem-quote">
+
+                                <div class="layui-form-item" data-sort="1">
+                                    <div class="layui-inline">
+                                        <div class="layui-input-inline" style="width: 200px;">
+                                            <input type="text" name="${line_sort}[line_detail][1][name]" autocomplete="off" class="layui-input">
+                                        </div>
+                                        <div class="layui-form-mid">：</div>
+                                        <div class="layui-input-inline" style="width: 200px;">
+                                            <input type="text" name="${line_sort}[line_detail][1][value]"  autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline layui-btn-group">
+                                        <button class="layui-btn layui-btn-sm layui-btn-danger del2"><i class="layui-icon layui-icon-delete"></i></button>
+                                        <button class="layui-btn layui-btn-sm add2"><i class="layui-icon layui-icon-add-1"></i></button>
+                                    </div>
+                                </div>
+
+                            </blockquote>`;
+                data.othis.parents('.layui-timeline-content').find('.type-cover').html(_html);
+            }
+
+            if (data.value==3) {
+                var _html = `<blockquote class="layui-elem-quote">
+                                <div class="layui-card-body" style="width: 300px;height: 150px;background-color: #2e6da4;text-align: center;color: white;font-size: 30px;border-radius: 5px;display: table-cell;vertical-align: middle;">
+                                    Ready for warm up
+                                </div>
+                            </blockquote>`;
+                data.othis.parents('.layui-timeline-content').find('.type-cover').html(_html);
+            }
+
+            if (data.value==5) {
+                var _html = `<blockquote class="layui-elem-quote">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">时间：</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="${line_sort}[line_detail]" value="" class="layui-input" placeholder="秒">
+                                    </div>
+                                </div>
+                            </blockquote>`;
+                data.othis.parents('.layui-timeline-content').find('.type-cover').html(_html);
+
+            }
+            if (data.value==6) {
+                var _html = `<blockquote class="layui-elem-quote">
+                                <textarea name="${line_sort}[line_detail]" class="layui-textarea" placeholder="请输入" style="width: 500px"></textarea>
+                            </blockquote>`;
+                data.othis.parents('.layui-timeline-content').find('.type-cover').html(_html);
+            }
+            if (data.value==7) {
+                var _html = `<blockquote class="layui-elem-quote">
+                                <div class="layui-card-body" style="width: 300px;height: 150px;background-color: #2e6da4;text-align: center;color: white;font-size: 30px;border-radius: 5px;display: table-cell;vertical-align: middle;">
+                                    <img src="" width="100px" height="100px" data-tips-image>
+                                </div>
+                            </blockquote>`;
+                data.othis.parents('.layui-timeline-content').find('.type-cover').html(_html);
+            }
+            if (data.value==8) {
+                var _html = `<blockquote class="layui-elem-quote">
+                                <div class="layui-card-body" style="width: 300px;height: 150px;background-color: #2e6da4;text-align: center;color: white;font-size: 30px;border-radius: 5px;display: table-cell;vertical-align: middle;">
+                                  Workout complete Great job
+                                </div>
+                            </blockquote>`;
+                data.othis.parents('.layui-timeline-content').find('.type-cover').html(_html);
+            }
+            form.render();
+        });
+
+
+        //上传视频组件，elem元素节点
+        var uploadFun = function (elem) {
+            upload.render({
+                elem:elem,
+                url:'/manage/thumb/upload',
+                accept: 'video',
+                done:function (res) {
+                    //查看兄弟节点上个视频编号,视频数量,当前时间线编号
+                    var sort = elem.prev().data('sort')?elem.prev().data('sort'):0;sort++;
+                    var video_num = elem.siblings('.layui-card').length;
+                    var line_sort = elem.parents('.layui-timeline-item').data('sort');
+                    var video_html = `<div class="layui-card layui-inline" style="text-align: center" data-sort="${sort}">
+                                    <div class=""><video controls width="300px"  height="150px" src="${res.url}"></video></div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">视频名称${video_num+1}：</label>
+                                        <div class="layui-input-inline">
+                                            <input type="hidden" name="${line_sort}[line_detail][${sort}][video_url]" value="${res.url}">
+                                            <input type="text" name="${line_sort}[line_detail][${sort}][name]" value="" class="layui-input" placeholder="视频名称">
+                                        </div>
+                                    </div>
+                                    <button class="layui-btn layui-btn-sm layui-btn-danger video-del">删除视频</button>
+                                </div>`;
+                    elem.before(video_html);
+                }
+            });
+        }
+
+        //实例已有HTML上传组件
+        $('.upload-video').each(function () {
+            var that = $(this);
+            that.one('mouseenter',function () {
+                console.log('原始HTML实例')
+                uploadFun(that);
+            })
+        })
+
+        //移除视频
+        $('.layui-timeline').on('click','.video-del',function () {
+            $(this).parent('.layui-card').remove();
+        })
+
+        //类型2的添加删除
+        $('.layui-timeline').on('click','.del2',function () {
+            if ($(this).parents('.layui-form-item').siblings('.layui-form-item').length>0){
+                $(this).parents('.layui-form-item').remove();
+            }
+        })
+        $('.layui-timeline').on('click','.add2',function () {
+            //查看兄弟节点上个编号,当前时间线编号
+            var sort = $(this).parents('.layui-form-item').data('sort');sort++;
+            var line_sort = $(this).parents('.layui-timeline-item').data('sort');
+            var type2_html = `<div class="layui-form-item" data-sort="${sort}">
+                                    <div class="layui-inline">
+                                        <div class="layui-input-inline" style="width: 200px;">
+                                            <input type="text" name="${line_sort}[line_detail][${sort}][name]" autocomplete="off" class="layui-input">
+                                        </div>
+                                        <div class="layui-form-mid">：</div>
+                                        <div class="layui-input-inline" style="width: 200px;">
+                                            <input type="text" name="${line_sort}[line_detail][${sort}][value]"  autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline layui-btn-group">
+                                        <button class="layui-btn layui-btn-sm layui-btn-danger del2"><i class="layui-icon layui-icon-delete"></i></button>
+                                        <button class="layui-btn layui-btn-sm add2"><i class="layui-icon layui-icon-add-1"></i></button>
+                                    </div>
+                                </div>`;
+            $(this).parents('.layui-elem-quote').append(type2_html)
+        })
+
+
+
+
+        form.on('submit(save)',function (data) {
+            var index = layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
+            $.ajax({
+                url:'add_timeline',
+                type:'post',
+                data:data.field,
+                dataType: "json",
+                success:function (res) {
+                    layer.close(index);
+                    layer.msg(res.msg,{time:2000},function () {
+                        // window.location.reload()
+                        $('.layui-this').trigger('click');
+                    });
+
+                }
+            })
+        })
+    });
+
+</script>

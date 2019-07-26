@@ -1,0 +1,210 @@
+{include file="layout/header" /}
+<body class="childrenBody" style="background-color:#F2F2F2;">
+
+<div class="layui-form" style="" id="FormIdA" url="{:url('manage/agent/agent_add')}">
+	<div class="layui-row layui-col-space10">
+		<div class="layui-col-md6">
+			<div class="layui-card">
+				<div class="layui-card-header">
+					基本信息
+				</div>
+				<div class="layui-card-body">
+					<div class="layui-form-item layui-row ">
+						<label class="layui-form-label">门店名称</label>
+						<div class="layui-input-block">
+							<input type="text" class="layui-input agent_name"  name="agent_name" placeholder="请输入门店名称" lay-verify="required" value="{$data.agent_name}">
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-row ">
+						<label class="layui-form-label">账号</label>
+						<div class="layui-input-block">
+							<input type="text" name="agent_username" class="layui-input agent_username" lay-verify="required" placeholder="请输入账号（用于登录）" value="{$data.agent_username}">
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-row ">
+						<label class="layui-form-label">密码</label>
+						<div class="layui-input-block">
+							<input type="password" name="agent_psw" class="layui-input agent_psw" lay-verify="required" placeholder="请输入密码（用于登录）" value="{$data.agent_psw}">
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-row ">
+						<label class="layui-form-label">确认密码</label>
+						<div class="layui-input-block">
+							<input type="password" name="psw_com" class="layui-input" lay-verify="required" placeholder="请再次输入密码" value="{$data.agent_psw}">
+						</div>
+					</div>
+					<div class="layui-form-item layui-row ">
+						<label class="layui-form-label">Studio ID</label>
+						<div class="layui-input-block">
+							<input type="text" name="agent_studio_id" class="layui-input" lay-verify="required" placeholder="" value="{$data.agent_studio_id?:(getRandChar(4))}">
+						</div>
+					</div>
+					<div class="layui-form-item layui-row ">
+						<label class="layui-form-label">门店联系人</label>
+						<div class="layui-input-block">
+							<input type="text" name="agent_link" class="layui-input agent_link" lay-verify="required" placeholder="请输入门店联系人" value="{$data.agent_link}">
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-row ">
+						<label class="layui-form-label">联系人手机</label>
+						<div class="layui-input-block">
+							<input type="text" name="agent_phone" class="layui-input agent_phone" lay-verify="required" placeholder="请输入联系人手机" value="{$data.agent_phone}">
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-row ">
+						<label class="layui-form-label">状态</label>
+						<div class="layui-input-block">
+							<select name="status" class="status" lay-filter="status" >
+								<option value="1" {if condition="$data.agent_status eq 1"}selected{/if}>正常</option>
+								<option value="0" {if condition="$data.agent_status eq 0"}selected{/if}>禁用</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-row ">
+						<label class="layui-form-label">排序</label>
+						<div class="layui-input-block">
+							<input type="text" class="layui-input sort"  name="sort" placeholder="请输入排序" lay-verify="sort"  value="{$data.sort}">
+						</div>
+					</div>
+					<input type="hidden" class="layui-input"  name="agent_id" value="{$data.agent_id}">
+				</div>
+			</div>
+
+		</div>
+		<div class="layui-col-md6">
+			<div class="layui-card">
+				<div class="layui-card-header">
+					地址
+				</div>
+				<div class="layui-card-body">
+					<div class="layui-form-item layui-row ">
+						<label class="layui-form-label">选择地区</label>
+						<div class="layui-input-block">
+							<input type="text" value="{$data.agent_area}" autocomplete="on" class="layui-input" lay-verify="required" id="city-picker" name="city-picker" readonly="readonly" data-toggle="city-picker" placeholder="请选择">
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-row ">
+						<label class="layui-form-label">完整地址</label>
+						<div class="layui-input-block">
+							<input type="text" name="agent_addr" class="layui-input agent_addr" lay-verify="required" placeholder="请输入门店完整地址" value="{$data.agent_addr}">
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-row ">
+						<label class="layui-form-label">经纬度</label>
+						<div class="layui-input-inline">
+							<input type="text" name="lng" readonly class="layui-input layui-bg-gray agent_addr" lay-verify="required" placeholder="" value="{$data.agent_lng}">
+						</div>
+						<div class="layui-input-inline" >
+							<input type="text" name="lat" readonly class="layui-input layui-bg-gray agent_addr" lay-verify="required" placeholder="" value="{$data.agent_lat}">
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-row ">
+						<label class="layui-form-label">搜索</label>
+						<div class="layui-input-block">
+							<input type="text" name="" id="addr_search" class="layui-input" placeholder="请输入" >
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-row" id="allmap" style="width: 100%;min-height: 250px"></div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<hr>
+	<div class="layui-form-item layui-row" style="text-align: center">
+
+		<button class="layui-btn" lay-submit="addAgent" lay-filter="addAgent">保存</button>
+		<!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+	</div>
+</div>
+<script src="__STATIC__/layui/modules/city-picker.data.js"></script>
+<link href="__STATIC__/layui/modules/city-picker.css" rel="stylesheet" />
+<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=RGOBZ-VI3CU-6CZVE-BNBXP-4MD3S-QABFG"></script>
+
+<script>
+		layui.config({
+			base:'/static/layui/modules/'
+		}).extend({
+            citypicker:'city-picker'
+		}).use(['form','common','jquery','citypicker'], function () {
+
+	    	var $ = layui.jquery
+            ,form = layui.form
+            ,common = layui.common
+            ,layer= layui.layer
+				,cityPicker = layui.citypicker;
+
+
+	        common.JKFormSubmit('FormIdA','addAgent');
+
+	        //城市三级联动
+            var currentPicker = new cityPicker("#city-picker", {
+                provincename:"provinceId",
+                cityname:"cityId",
+                districtname: "districtId",
+                level: 'districtId',// 级别
+            });
+            // currentPicker.setValue("河南省/信阳市/新县");
+
+			//腾讯地图
+            var geocoder,map,marker = null;
+            var init = function() {
+                var center = new qq.maps.LatLng('{$data.agent_lat?:39.916527}','{$data.agent_lng?:116.397128}');
+                map = new qq.maps.Map(document.getElementById('allmap'),{
+                    center: center,
+                    zoom: 15
+                });
+                var marker = new qq.maps.Marker({
+                    map:map,
+                    position: center
+                });
+                //调用地址解析类
+                geocoder = new qq.maps.Geocoder({
+                    complete : function(result){
+                        $('input[name="lng"]').val(result.detail.location.lng);
+                        $('input[name="lat"]').val(result.detail.location.lat);
+                        map.setCenter(result.detail.location);
+                        var marker = new qq.maps.Marker({
+                            map:map,
+                            position: result.detail.location
+                        });
+                    }
+                });
+
+                //绑定单击事件添加参数
+                qq.maps.event.addListener(map, 'click', function(event) {
+                    $('input[name="lng"]').val(event.latLng.getLng());
+                    $('input[name="lat"]').val(event.latLng.getLat());
+                    $('input[id="addr_search"]').val('');
+                    map.setCenter(event.latLng);
+                    var marker = new qq.maps.Marker({
+                        map:map,
+                        position: event.latLng
+                    });
+                });
+            }
+
+            $('#addr_search').on('input',function () {
+                var address = $.trim($('input[id="addr_search"]').val());
+                //通过getLocation();方法获取位置信息值
+                geocoder.getLocation(address);
+            })
+
+			init();
+	    });
+
+	</script>
+</body>
+</html>

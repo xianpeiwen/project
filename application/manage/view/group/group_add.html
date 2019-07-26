@@ -1,0 +1,106 @@
+{include file="layout/header" /}
+<body class="childrenBody">
+<div class="layui-form" style="width:80%;" id="FormIdA" url="{:url('manage/Group/group_add_form')}">
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">管理组等级</label>
+		<div class="layui-input-block">
+			<select name="pid" class="autoPid" lay-filter="autoPid">
+				<option value="0">顶级组</option>
+				{volist name="auth_group" id="vo"}
+
+					<option value="{$vo.id}">{$vo.title}</option>
+
+					{volist name="vo._child" id="v"}
+
+						<option value="{$v.id}">--------{$v.title}</option>
+
+						{volist name="v._child" id="vc"}
+
+							<option value="{$vc.id}">----------------{$vc.title}</option>
+
+							{volist name="vc._child" id="vv"}
+
+								<option value="{$vv.id}">------------------------{$vv.title}</option>
+
+							{/volist}
+
+						{/volist}
+
+					{/volist}
+
+				{/volist}
+			</select>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">组名</label>
+		<div class="layui-input-block">
+			<input type="text" name="title" class="layui-input autoTitle" lay-verify="title" placeholder="请输入组中文名称（如：总裁组 ）">
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">状态</label>
+		<div class="layui-input-block">
+			<select name="status" class="autoStatus" lay-filter="autoStatus" >
+				<option value="1">正常使用</option>
+				<option value="2">限制使用</option>
+			</select>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">排序</label>
+		<div class="layui-input-block">
+			<input type="text" class="layui-input autoSort"  name="sort" placeholder="请输入排序">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">选择权限</label>
+		<div class="layui-input-block">
+			<div id="LAY-auth-tree-index"></div>
+		</div>
+	</div>
+	<input type="hidden" class="layui-input autoId"  name="ids">
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<div class="layui-input-block">
+			<button class="layui-btn layui-btn-sm" lay-submit="addUser" lay-filter="addUser">立即添加</button>
+			<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+		</div>
+	</div>
+</div>
+</form>
+	<script>
+	    layui.use(['common','jquery', 'form'], function () {
+	    	var $ = layui.jquery;
+			var common = layui.common;
+			var form = layui.form;
+			var id = $('.autoId').val();
+			if( id.length == 0){
+				id = '';
+			}
+			$.ajax({
+				url: 'group_auth_list?id='+id,
+				dataType: 'json',
+				success: function(data){
+					console.log(data)
+					// 渲染时传入渲染目标ID，树形结构数据（具体结构看样例，checked表示默认选中），以及input表单的名字
+					common.render('#LAY-auth-tree-index', data.data.trees, {inputname: 'rules[]', layfilter: 'lay-check-auth', openall: false});
+
+					// 监听自定义lay-filter选中状态，PS:layui现在不支持多次监听，所以扩展里边只能改变触发逻辑，然后引起了事件冒泡延迟的BUG，要是谁有好的建议可以反馈我
+					form.on('checkbox(lay-check-auth)', function(data){
+						// 注意这里：需要等待事件冒泡完成，不然获取叶子节点不准确。
+						setTimeout(function(){
+							// 获取选中的叶子节点
+							var leaf = common.getLeaf('#LAY-auth-tree-index');
+							
+						}, 100);
+					});
+				}
+			})
+
+
+	        
+	        common.JKFormSubmit('FormIdA','addUser');
+	    });
+	</script>
+</body>
+</html>

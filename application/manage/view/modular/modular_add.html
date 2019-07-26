@@ -1,0 +1,84 @@
+{include file="layout/header" /}
+<body class="childrenBody">
+
+<div class="layui-form" style="width:80%;" id="FormIdA" url="{:url('manage/Modular/modular_add_form')}">
+
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">模块等级</label>
+		<div class="layui-input-block">
+			<select name="modular_father" class="modular_father" lay-filter="modular_father">
+				<option value="0">顶级模块</option>
+				{volist name="modular" id="vo"}
+					<option value="{$vo.modular_id}">|---{$vo.modular_name}</option>
+					{volist name="vo._child" id="v"}
+						<option value="{$v.modular_id}">|------{$v.modular_name}</option>
+						{volist name="v._child" id="vc"}
+							<option value="{$vc.modular_id}">|---------{$vc.modular_name}</option>
+						{/volist}
+					{/volist}
+				{/volist}	
+			</select>
+		</div>
+	</div>	
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">模块名</label>
+		<div class="layui-input-block">
+			<input type="text" name="modular_name" class="layui-input modular_name" lay-verify="modular_name" placeholder="请输入合法的模块名称（如：模块管理 ）">
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">URL</label>
+		<div class="layui-input-block">
+			<input type="text" name="modular_url" class="layui-input modular_url" lay-verify="modular_url" placeholder="请输入合法的跳转路径（如： manage/index/index）">
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">图标</label>
+		<div class="layui-input-block">
+			<input type="text" name="modular_icon" class="layui-input modular_icon" lay-verify="modular_icon" placeholder="请输入图标代码">
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">状态</label>
+		<div class="layui-input-block">
+			<select name="modular_show" class="modular_show" lay-filter="modular_show" >
+				<option value="1">正常使用</option>
+				<option value="2">限制使用</option>
+			</select>
+
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">排序</label>
+		<div class="layui-input-block">
+			<input type="text" class="layui-input modular_sort"  name="modular_sort" lay-verify="modular_sort" placeholder="请输入排序" value="{$modular_sort}">
+		</div>
+	</div>
+	<input type="hidden" class="layui-input Id"  name="ids">
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<div class="layui-input-block">
+
+			<button class="layui-btn layui-btn-sm" lay-submit="addUser" lay-filter="addUser">立即添加</button>
+
+			<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+
+		</div>
+	</div>
+
+</div>
+
+</form>
+
+	<script>
+
+	    layui.use(['common'], function () {
+	        var common = layui.common;
+	        common.JKFormSubmit('FormIdA','addUser');
+	    });
+
+	</script>
+
+</body>
+
+</html>

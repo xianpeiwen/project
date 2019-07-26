@@ -1,0 +1,164 @@
+{include file="layout/header" /}
+
+<body class="childrenBody">
+
+<div class="layui-form" style="width:80%;" id="FormIdA" url="{:url('manage/Auth/auto_add_form')}">
+
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<label class="layui-form-label">模块等级</label>
+
+		<div class="layui-input-block">
+
+			<select name="pid" class="autoPid" lay-filter="autoPid">
+
+				<option value="0">顶级模块</option>
+
+				{volist name="auth_rule" id="vo"}
+
+					<option value="{$vo.id}">{$vo.title}</option>
+
+					{volist name="vo._child" id="v"}
+
+						<option value="{$v.id}">--------{$v.title}</option>
+
+						{volist name="v._child" id="vc"}
+
+							<option value="{$vc.id}">----------------{$vc.title}</option>
+
+							{volist name="vc._child" id="vv"}
+
+								<option value="{$vv.id}">------------------------{$vv.title}</option>
+
+							{/volist}
+
+						{/volist}
+
+					{/volist}
+
+				{/volist}	
+
+			</select>
+
+		</div>
+
+	</div>
+	
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<label class="layui-form-label">名称</label>
+
+		<div class="layui-input-block">
+
+			<input type="text" name="title" class="layui-input autoTitle" lay-verify="title" placeholder="请输入规则中文名称（如：模块管理 ）">
+
+		</div>
+
+	</div>
+
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<label class="layui-form-label">规则</label>
+
+		<div class="layui-input-block">
+
+			<input type="text" class="layui-input autoName" name="name" lay-verify="name" placeholder="请输入规则（如：layui/auto/index ）">
+
+		</div>
+
+	</div>
+
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<label class="layui-form-label">图标</label>
+
+		<div class="layui-input-block">
+
+			<input type="text" name="icon" class="layui-input autoIcon" lay-verify="icon" placeholder="请输入图标代码">
+
+		</div>
+
+	</div>
+
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<label class="layui-form-label">状态</label>
+
+		<div class="layui-input-block">
+
+			<select name="status" class="autoStatus" lay-filter="autoStatus" >
+
+				<option value="1">正常使用</option>
+
+				<option value="2">限制使用</option>
+
+			</select>
+
+		</div>
+
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<label class="layui-form-label">左侧</label>
+
+		<div class="layui-input-block">
+
+			<select name="show" class="autoshow" lay-filter="autoshow" >
+
+				<option value="1">显示</option>
+
+				<option value="2">隐藏</option>
+
+			</select>
+
+		</div>
+
+	</div>
+
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<label class="layui-form-label">排序</label>
+
+		<div class="layui-input-block">
+
+			<input type="text" class="layui-input autoSort"  name="sort" placeholder="请输入排序">
+
+		</div>
+
+	</div>
+
+	<input type="hidden" class="layui-input autoId"  name="ids">
+
+	<div class="layui-form-item layui-row layui-col-xs12">
+
+		<div class="layui-input-block">
+
+			<button class="layui-btn layui-btn-sm" lay-submit="addUser" lay-filter="addUser">立即添加</button>
+
+			<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+
+		</div>
+
+	</div>
+
+</div>
+
+</form>
+
+	<script>
+
+	    layui.use(['common'], function () {
+
+	        var common = layui.common;
+
+
+
+	        common.JKFormSubmit('FormIdA','addUser');
+
+	    });
+
+	</script>
+
+</body>
+
+</html>

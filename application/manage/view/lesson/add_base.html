@@ -1,0 +1,172 @@
+<div class="layui-form" id="FormIdA" url="{:url('')}">
+
+    <input type="hidden" name="lesson_id" value="{$data.lesson_id}">
+    <div class="layui-form-item layui-row ">
+        <label class="layui-form-label">日期</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input layui-bg-gray" readonly name="lesson_date" value="{$data.lesson_date?:$lesson_date}">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row ">
+        <label class="layui-form-label">LOGO</label>
+        <div class="layui-input-block">
+            <!--<button type="button" class="layui-btn" id="test1">上传图片</button>-->
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" src="{$data.lesson_logo}" width="100" height="100" id="demo1">
+                <p id="demoText"></p>
+                <input type="hidden" name="lesson_logo" value="{$data.lesson_logo}">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-row">
+        <label class="layui-form-label">课程名称</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="lesson_name" placeholder="请输入课程名称"
+                   lay-verify="required" value="{$data.lesson_name}">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row">
+        <label class="layui-form-label">英文名称</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="lesson_name_eng" placeholder="请输入课程英文名称"
+                   lay-verify="" value="{$data.lesson_name_eng}">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row">
+        <label class="layui-form-label">课程说明</label>
+        <div class="layui-input-block lesson_desc">
+            {if empty($data['lesson_desc'])}
+            {php}$data['lesson_desc'] = [''];{/php}
+            {else}
+            {php}$data['lesson_desc'] = json_decode($data['lesson_desc'],true);{/php}
+            {/if}
+            {foreach $data.lesson_desc as $k=>$v}
+            <div class="lesson_desc_item">
+                <div class="layui-inline" style="width: 70%">
+                    <textarea class="layui-textarea" name="lesson_desc[{$k}]" cols="10" rows="2">{$v}</textarea>
+                </div>
+                <div class="layui-inline layui-btn-group">
+                    <button class="layui-btn layui-btn-sm up"><i class="layui-icon layui-icon-up"></i></button>
+                    <button class="layui-btn layui-btn-sm down"><i class="layui-icon layui-icon-down"></i></button>
+                    <button class="layui-btn layui-btn-sm layui-btn-danger del"><i class="layui-icon layui-icon-delete"></i></button>
+                    <button class="layui-btn layui-btn-sm add"><i class="layui-icon layui-icon-add-1"></i></button>
+                </div>
+            </div>
+            {/foreach}
+
+        </div>
+    </div>
+
+    <hr>
+    <div class="layui-form-item layui-row ">
+        <label class="layui-form-label"></label>
+        <button class="layui-btn" lay-submit="save" lay-filter="save">保存</button>
+        <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+    </div>
+</div>
+<script>
+    layui.use(['form', 'common','jquery','upload','element','laydate'], function () {
+        var element = layui.element,
+            $ = layui.jquery,
+            form = layui.form,
+            common = layui.common,
+            layer = layui.layer,
+            upload = layui.upload,
+            laydate = layui.laydate;
+        form.render();
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#demo1'
+            ,url: '/manage/thumb/upload'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code != 1){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                $('#demo1').siblings('input[type="hidden"]').val(res.url);
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+
+
+        $('.lesson_desc').on('click','.add',function () {
+            var key = new Date().getTime();
+            var html = `<div class="lesson_desc_item">
+                            <div class="layui-inline" style="width: 70%">
+                                <textarea class="layui-textarea" name="lesson_desc[${key}]" cols="10" rows="2"></textarea>
+                            </div>
+                            <div class="layui-inline layui-btn-group">
+                                <button class="layui-btn layui-btn-sm up"><i class="layui-icon layui-icon-up"></i></button>
+                                <button class="layui-btn layui-btn-sm down"><i class="layui-icon layui-icon-down"></i></button>
+                                <button class="layui-btn layui-btn-sm layui-btn-danger del"><i class="layui-icon layui-icon-delete"></i></button>
+                                <button class="layui-btn layui-btn-sm add"><i class="layui-icon layui-icon-add-1"></i></button>
+                            </div>
+                        </div>`;
+            $('.lesson_desc').append(html);
+        })
+
+        $('.lesson_desc').on('click','.del',function () {
+            if($('.lesson_desc_item').length==1){
+                $('textarea[name^="lesson_desc"]').val('');
+            }else {
+                $(this).parents('.lesson_desc_item').remove();
+            }
+        })
+
+        $('.lesson_desc').on('click','.up',function () {
+            var parentsDiv = $(this).parents(".lesson_desc_item");
+            var prev = parentsDiv.prev();
+            if(prev.html()!=undefined){
+                //prev.before(parentsDiv);
+                prev.fadeOut("fast",function(){
+                    $(this).before(parentsDiv);
+                }).fadeIn();
+            }
+        })
+
+        $('.lesson_desc').on('click','.down',function () {
+            var parentsDiv = $(this).parents(".lesson_desc_item");
+            var next = parentsDiv.next();
+            if(next.html()!=undefined){
+                //next.after(parentsDiv);
+                next.fadeOut("fast",function(){
+                    $(this).after(parentsDiv);
+                }).fadeIn();
+            }
+        })
+
+        form.on('submit(save)',function (data) {
+            var index = layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
+            $.ajax({
+                url:'add_base',
+                type:'post',
+                data:data.field,
+                dataType: "json",
+                success:function (res) {
+                    layer.close(index);
+                    layer.msg(res.msg,{time:2000},function () {
+                        $('.layui-this').trigger('click');
+                    });
+
+                }
+            })
+        })
+    });
+
+</script>

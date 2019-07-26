@@ -1,0 +1,51 @@
+{include file="layout/header" /}
+<body class="childrenBody">
+	<!-- <blockquote class="layui-elem-quote layui-bg-green">
+		<div id="nowTime"></div>
+	</blockquote>
+	<div style="text-align: center;">
+		<img style="width: 50%"  src="/images/public/timg.jpg" alt="">
+	</div>
+	<script type="text/javascript" src="__STATIC__admin/index/page/page.js"></script> -->
+    {assign name="var" value="123" /}
+	<div class="layui-form-item">
+        <label class="layui-form-label">头像</label>
+        <div class="layui-input-inline">
+            <input type="text" name="head" lay-verify="required" id="inputimgurl" placeholder="图片地址" value="123.jpg" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <div class="layui-upload-list" style="margin:0">
+                <img src="" id="srcimgurl" class="layui-upload-img">
+            </div>
+        </div>
+        <div class="layui-input-inline layui-btn-container" style="width: auto;">
+            <button class="layui-btn layui-btn-primary" id="editimg">修改图片</button >
+        </div>
+        <div class="layui-form-mid layui-word-aux">头像的尺寸限定150x150px,大小在50kb以内</div>
+    </div>
+    <div>{$var|numberFormat} </div>
+</body>
+<script>
+	layui.use(['form','croppers'], function () {
+        var $ = layui.jquery
+            ,form = layui.form
+            ,croppers = layui.croppers
+            ,layer= layui.layer;
+
+        //创建一个头像上传组件
+        croppers.render({
+            elem: '#editimg'
+            ,saveW:150     //保存宽度
+            ,saveH:150
+            ,mark:1/1    //选取比例
+            ,area:['40%', '60%']  //弹窗宽度
+            ,format:'base64'				//直接上传：upload  ，返回 base64编码：base64
+            // ,url: "uploadImg"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+            ,done: function(url){ //上传完毕回调
+                $("#inputimgurl").val(url);
+                $("#srcimgurl").attr('src',url);
+            }
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,57 @@
+{include file="layout/header" /}
+<body class="childrenBody" style="background-color:#F2F2F2;">
+	<div class="layui-card">
+		<div class="layui-card-header">门店列表</div>
+		<div class="layui-card-body">
+			<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+				<ul class="layui-tab-title">
+					<li class="layui-this" data-field="agent_status" data-value="">全部<span class="layui-badge">{$count}</span></li>
+					<li data-field="agent_status" data-value="1">正常<span class="layui-badge">{$tab1}</span></li>
+					<li data-field="agent_status" data-value="0">禁用<span class="layui-badge">{$tab2}</span></li>
+				</ul>
+				<div class="layui-tab-content"></div>
+			</div>
+			<form class="layui-form search-form" onclick="return false;">
+				<div class="layui-form-item">
+					<div class="layui-input-inline">
+						<input name="create_at" id="create_at" value="" autocomplete="off" placeholder="请选择创建时间" class="layui-input">
+					</div>
+					<div class="layui-input-inline">
+						<select name="data-field" lay-verify="">
+							<option value="">请选择查询内容</option>
+							<option value="agent_name">门店名称</option>
+							<option value="agent_addr">地址</option>
+							<option value="agent_username">账号</option>
+							<option value="agent_studio_id">studioId</option>
+							<option value="agent_link">门店联系人</option>
+							<option value="agent_phone">联系人号码</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" name="data-value" placeholder="请输入查询信息" autocomplete="off" class="layui-input">
+					</div>
+
+					<div class="layui-input-inline">
+						<button class="layui-btn search">搜索</button>
+						<button class="layui-btn reset">重置</button>
+					</div>
+					<div class="layui-input-inline" style="float:right;">
+						<a class="layui-btn create_salesman" style="float:right;" >添加门店</a>
+					</div>
+				</div>
+			</form>
+			<table id="agentList" lay-filter="agentList"></table>
+
+			<script type="text/html" id="action">
+
+				<a class="layui-btn layui-btn-xs" lay-event="edit" >编辑</a>
+
+				<!-- <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已启用</a> -->
+
+				<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+			</script>
+
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="__STATIC__admin/agent.js" ></script>

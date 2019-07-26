@@ -1,0 +1,71 @@
+{include file="layout/header" /}
+<body class="childrenBody" style="background-color:#F2F2F2;">
+	<div class="layui-card">
+		<div class="layui-card-header">会员卡设置</div>
+		<div class="layui-card-body">
+
+			<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+				<ul class="layui-tab-title">
+					<li class="layui-this" data-field="user_status" data-value="">全部<span class="layui-badge">{$count}</span></li>
+					<li data-field="user_status" data-value="1">正常<span class="layui-badge">{$tab1}</span></li>
+					<li data-field="user_status" data-value="0">黑名单<span class="layui-badge">{$tab2}</span></li>
+				</ul>
+				<div class="layui-tab-content"></div>
+			</div>
+			<form class="layui-form search-form" onclick="return false;">
+				<div class="layui-form-item">
+					<div class="layui-input-inline">
+						<select name="user_agent_id" lay-verify="">
+							<option value="">请选择门店</option>
+							{foreach $agent as $v}
+							<option value="{$v.agent_id}">{$v.agent_name}</option>
+							{/foreach}
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<input name="create_at" id="create_at" value="" autocomplete="off" placeholder="请选择创建时间" class="layui-input">
+					</div>
+
+					<div class="layui-input-inline">
+						<select name="data-field" lay-verify="">
+							<option value="">请选择查询内容</option>
+							<option value="user_nickname">昵称</option>
+							<option value="user_phone">手机号</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" name="data-value" placeholder="请输入查询信息" autocomplete="off" class="layui-input">
+					</div>
+
+					<div class="layui-input-inline">
+						<button class="layui-btn search">搜索</button>
+						<button class="layui-btn reset">重置</button>
+					</div>
+				</div>
+			</form>
+			<style>
+				.layui-table-cell{
+					height:auto !important;
+				}
+			</style>
+			<table id="tableList" lay-filter="tableList"></table>
+			{literal}
+			<script type="text/html" id="user_card">
+				{{#if(d.user_end_at!='out_of_date'){}}
+				<span class="layui-badge layui-bg-blue">时间卡有效期：{{d.user_end_at}}</span><br>
+				{{#}}}
+				<span class="layui-badge layui-bg-green">钱包：{{d.user_balance}} 元</span>
+			</script>
+
+			<script type="text/html" id="action">
+				<a class="layui-btn layui-btn-xs" lay-event="record" >会员购买记录</a>
+				<a class="layui-btn layui-btn-xs" data-modal="edit?id={{d.user_id}}" data-title="编辑会员信息">编辑</a>
+				<!-- <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已启用</a> -->
+				<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+			</script>
+			{/literal}
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="__STATIC__admin/user.js" ></script>

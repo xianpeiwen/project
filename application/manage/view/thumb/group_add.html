@@ -1,0 +1,29 @@
+{include file="layout/header" /}
+<body class="childrenBody">
+<div class="layui-form">
+
+	<div class="layui-input-inline">
+		<input type="text" name="name" placeholder="请输入" autocomplete="off" class="layui-input">
+	</div>
+	<div class="layui-input-inline">
+		<button class="layui-btn search" lay-submit="" lay-filter="formDemo">确定</button>
+	</div>
+
+</div>
+</body>
+<script>
+	layui.use(['form'],function () {
+		var $ = layui.jquery;
+        var index = parent.layer.getFrameIndex(window.name);
+        $('.search').on('click',function () {
+            var name = $('input[name="name"]').val();
+            if (name==''){
+                layui.layer.msg('不能为空')
+            } else {
+                $.post('/manage/thumb/group_add',{name:name},function (res) {
+					parent.layer.close(index);
+                })
+            }
+        })
+    })
+</script>

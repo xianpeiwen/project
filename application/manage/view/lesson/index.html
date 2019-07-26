@@ -1,0 +1,121 @@
+{include file="layout/header" /}
+<style>
+    .lesson-active{
+        background-color:  #5FB878;
+    }
+</style>
+<body class="childrenBody" style="background-color:#F2F2F2;">
+    <div class="layui-card">
+        <div class="layui-card-header">课程列表</div>
+
+        <div class="layui-card-body"  style="min-height: 738px">
+
+            <!--课程头部-->
+            <table class="layui-table">
+                    <tbody>
+                    <tr style="height: 150px">
+                        <th style="text-align: center" width="50" id="pre" data-date="{$data[0]['lesson_date']}"><i class="layui-icon">&#xe603;</i></th>
+                        {foreach $data as $v}
+                        <th style="text-align: center" data-today="{$v.today}" data-id="{$v.lesson_id}" data-date="{$v.lesson_date}" class="lesson {if $v.today=='today'}lesson-active{/if}">
+                            <div class="layui-card">
+                                <div class="layui-card-header">
+                                    {$v.week}/{$v.lesson_date}
+                                </div>
+
+                                <div class="layui-card-body" style="height: 140px">
+                                    {if !empty($v.lesson_id)}
+                                    <img src="{$v.lesson_logo}" alt="" width="100px" height="100px"><br><br>
+                                    <p style="height: 20px">
+                                        {$v.lesson_name}
+                                    </p>
+                                    {else}
+                                    <i class="layui-icon" style="font-size: 50px; color: #009688;line-height: 140px">&#xe61f;</i>
+                                    {/if}
+                                </div>
+                            </div>
+                        </th>
+                        {/foreach}
+                        <th style="text-align: center" width="50" id="next" data-date="{$data[6]['lesson_date']}"><i class="layui-icon">&#xe602;</i></th>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            <!--详情-->
+            <div class="">
+                <div class="layui-tab layui-tab-brief" lay-filter="desc">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this" data-type="base">基本</li>
+                        <li data-type="ctrl">控制</li>
+                        <li data-type="timeline">时间线</li>
+                        <li data-type="action">动作管理</li>
+                    </ul>
+                    <div class="layui-tab-content" style="min-height: 400px">
+                        <div class="layui-tab-item layui-show desc">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script>
+    layui.use(['layer','element','jquery'], function(){
+        var layer = layui.layer,
+            $ = layui.jquery,
+            element = layui.element;
+        var lesson_id='';
+        var lesson_date='';
+        element.on('tab(desc)', function(){
+            get_html(lesson_id,lesson_date,this.getAttribute('data-type'));
+        });
+
+        //表单
+        if($('th[data-today="today"]')){
+            lesson_id = $('th[data-today="today"]').data('id');
+            lesson_date = $('th[data-today="today"]').data('date');
+            get_html(lesson_id,lesson_date)
+        }
+
+        //选中课程
+        $('tbody').on('click','.lesson',function () {
+            lesson_id = $(this).data('id');
+            lesson_date = $(this).data('date');
+            $(this).addClass('lesson-active').siblings().removeClass('lesson-active');
+            $('li[data-type="base"]').addClass('layui-this').siblings('li').removeClass('layui-this');
+            get_html(lesson_id,lesson_date)
+        })
+
+        function get_html(lesson_id,lesson_date,type='base') {
+            $.get('add_'+type,{lesson_id:lesson_id,lesson_date:lesson_date},function (res) {
+                $('.desc').html(res);
+            })
+        }
+
+        // function get_html(lesson_id,lesson_date) {
+        //     $.get('add',{lesson_id:lesson_id,lesson_date:lesson_date},function (res) {
+        //         $('.desc').html(res);
+        //     })
+        // }
+
+        //上一周
+        $('tbody').on('click','#pre',function () {
+            var lesson_date = $(this).data('date');
+            $.get('pre',{lesson_date:lesson_date,type:'pre'},function (res) {
+                $('tbody').html(res);
+            })
+        })
+        //下一周
+        $('tbody').on('click','#next',function () {
+            var lesson_date = $(this).data('date');
+            $.get('pre',{lesson_date:lesson_date,type:'next'},function (res) {
+                $('tbody').html(res);
+            })
+        })
+    });
+</script>

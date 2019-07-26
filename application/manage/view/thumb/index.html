@@ -1,0 +1,92 @@
+{include file="layout/header" /}
+<body class="childrenBody">
+	<div class="layui-card">
+		<div class="layui-card-header">
+			<div class="layui-form">
+				<!--<div class="layui-form-item">-->
+
+					<div class="layui-input-inline">
+						<input type="text" name="title" placeholder="请输入查询信息" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline">
+						<button class="layui-btn search" lay-submit="" lay-filter="formDemo">搜索</button>
+						<button class="layui-btn reset">重置</button>
+						<!-- <button class="layui-btn" lay-submit lay-filter="formDemo">导出XLS</button> -->
+					</div>
+					<div class="layui-input-inline" style="float:right;">
+						<a class="layui-btn layui-btn-danger" id="">删除</a>
+						<a class="layui-btn" id="editimg" >上传</a>
+					</div>
+				<!--</div>-->
+			</div>
+		</div>
+	</div>
+	<div class="layui-card layui-row layui-col-space10">
+		<div class="layui-col-md2 ">
+			<table class="layui-table" lay-skin="line">
+				<thead>
+				<tr>
+					<th class="addGroup">添加分组<i class="layui-icon">&#xe654;</i></th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td>全部</td>
+				</tr>
+				<tr>
+					<td>未分组</td>
+				</tr>
+				{foreach $group as $v}
+				<tr>
+					<td>{$v.name}</td>
+				</tr>
+				{/foreach}
+				</tbody>
+			</table>
+		</div>
+		<div class="layui-col-md10" style="padding: 10px">
+			{foreach $thumb as $t}
+			<img class="select-img" src="{$t.url}" width="15%" alt="">
+			{/foreach}
+
+		</div>
+	</div>
+	<div style="text-align: center">
+		<button class="layui-btn">确认</button>
+		<button class="layui-btn layui-btn-normal">取消</button>
+	</div>
+</body>
+<script>
+	layui.use(['form','croppers','upload'],function () {
+        var form = layui.form,
+		layer = layui.layer,
+			$ = layui.jquery,
+        upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#editimg' //绑定元素
+            ,url: '/manage/thumb/upload' //上传接口
+            ,done: function(res){
+                //上传完毕回调
+				if (res.code==1){
+				    layer.msg('上传完成');
+				}
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+
+        $('.addGroup').on('click',function () {
+            var index = layui.layer.open({
+                title : '分组名',
+                type : 2,
+                content : "/manage/thumb/group_add",
+                success : function(layero, index){
+
+                }
+            })
+        })
+    })
+</script>
