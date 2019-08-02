@@ -1,0 +1,209 @@
+<div class="layui-form" id="FormIdA" url="{:url('')}">
+    <input type="hidden" name="id" value="{$data.id}">
+    <div class="layui-row layui-col-space10">
+        <div class="layui-card">
+            <div class="layui-card-header">动作视频 （共{$count?:0}个）</div>
+            <div class="layui-card-body">
+                <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this" data-sort="1">Exercise TV1</li>
+                        <li data-sort="2">Exercise TV2</li>
+                        <li data-sort="3">Exercise TV3</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show" data-sort="1">
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <select name="ac_tv1type" lay-verify="required">
+                                        <option value="" {if $data.ac_tv1type==''}selected{/if}>请选择屏幕类型</option>
+                                        <option value="1" {if $data.ac_tv1type==1}selected{/if}>横排</option>
+                                        <option value="2" {if $data.ac_tv1type==2}selected{/if}>宫格</option>
+                                    </select>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">(单个TV，横排≤3，宫格≤9)</div>
+                            </div>
+                            <blockquote class="layui-elem-quote" id="tv1">
+                                {if !empty($data.tv1)}
+                                {foreach $data.tv1 as $k1=>$v1}
+                                <div class="layui-card layui-inline" style="text-align: center" data-sort="{$k1+1}">
+                                    <div class=""><video controls width="300px"  height="150px" src="{$v1.video_url?:''}"></video></div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">视频名称{$k1+1}：</label>
+                                        <div class="layui-input-inline">
+                                            <input type="hidden" name="1[{$k1+1}][tv]" value="1">
+                                            <input type="hidden" name="1[{$k1+1}][video_sort]" value="{$v1.video_sort?:''}">
+                                            <input type="hidden" name="1[{$k1+1}][video_url]" value="{$v1.video_url?:''}">
+                                            <input type="text" name="1[{$k1+1}][video_name]" value="{$v1.video_name?:''}" class="layui-input" placeholder="视频名称">
+                                        </div>
+                                    </div>
+                                    <button class="layui-btn layui-btn-sm layui-btn-danger video-del">删除视频</button>
+                                </div>
+                                {/foreach}
+                                {/if}
+                                <button type="button" class="layui-btn upload-video"><i class="layui-icon layui-icon-video"></i>上传视频</button>
+                            </blockquote>
+                        </div>
+                        <div class="layui-tab-item" data-sort="2">
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <select name="ac_tv2type" lay-verify="required">
+                                        <option value="" {if $data.ac_tv2type==''}selected{/if}>请选择屏幕类型</option>
+                                        <option value="1" {if $data.ac_tv2type==1}selected{/if}>横排</option>
+                                        <option value="2" {if $data.ac_tv2type==2}selected{/if}>宫格</option>
+                                    </select>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">(单个TV，横排≤3，宫格≤9)</div>
+                            </div>
+                            <blockquote class="layui-elem-quote" id="tv2">
+                                {if !empty($data.tv2)}
+                                {foreach $data.tv2 as $k2=>$v2}
+                                <div class="layui-card layui-inline" style="text-align: center" data-sort="{$k2+1}">
+                                    <div class=""><video controls width="300px"  height="150px" src="{$v2.video_url?:''}"></video></div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">视频名称{$k2+1}：</label>
+                                        <div class="layui-input-inline">
+                                            <input type="hidden" name="2[{$k2+1}][tv]" value="2">
+                                            <input type="hidden" name="2[{$k2+1}][video_sort]" value="{$v2.video_sort?:''}">
+                                            <input type="hidden" name="2[{$k2+1}][video_url]" value="{$v2.video_url?:''}">
+                                            <input type="text" name="2[{$k2+1}][video_name]" value="{$v2.video_name?:''}" class="layui-input" placeholder="视频名称">
+                                        </div>
+                                    </div>
+                                    <button class="layui-btn layui-btn-sm layui-btn-danger video-del">删除视频</button>
+                                </div>
+                                {/foreach}
+                                {/if}
+                                <button type="button" class="layui-btn upload-video"><i class="layui-icon layui-icon-video"></i>上传视频</button>
+                            </blockquote>
+                        </div>
+                        <div class="layui-tab-item" data-sort="3">
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <select name="ac_tv3type" lay-verify="required">
+                                        <option value="" {if $data.ac_tv3type==''}selected{/if}>请选择屏幕类型</option>
+                                        <option value="1" {if $data.ac_tv3type==1}selected{/if}>横排</option>
+                                        <option value="2" {if $data.ac_tv3type==2}selected{/if}>宫格</option>
+                                    </select>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">(单个TV，横排≤3，宫格≤9)</div>
+                            </div>
+                            <blockquote class="layui-elem-quote" id="tv3">
+                                {if !empty($data.tv3)}
+                                {foreach $data.tv3 as $k3=>$v3}
+                                <div class="layui-card layui-inline" style="text-align: center" data-sort="{$k3+1}">
+                                    <div class=""><video controls width="300px"  height="150px" src="{$v3.video_url?:''}"></video></div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">视频名称{$k3+1}：</label>
+                                        <div class="layui-input-inline">
+                                            <input type="hidden" name="3[{$k3+1}][tv]" value="3">
+                                            <input type="hidden" name="3[{$k3+1}][video_sort]" value="{$v3.video_sort?:''}">
+                                            <input type="hidden" name="3[{$k3+1}][video_url]" value="{$v3.video_url?:''}">
+                                            <input type="text" name="3[{$k3+1}][video_name]" value="{$v3.video_name?:''}" class="layui-input" placeholder="视频名称">
+                                        </div>
+                                    </div>
+                                    <button class="layui-btn layui-btn-sm layui-btn-danger video-del">删除视频</button>
+                                </div>
+                                {/foreach}
+                                {/if}
+                                <button type="button" class="layui-btn upload-video"><i class="layui-icon layui-icon-video"></i>上传视频</button>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline">
+                <button class="layui-btn" lay-submit="save" lay-filter="save">保存</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script>
+    layui.use(['form','upload','jquery'],function () {
+        var form = layui.form,
+        upload = layui.upload,
+        $ = layui.jquery;
+        form.render();
+
+        Sortable.create(tv1,{
+            ghostClass: 'ghost'
+        });
+        Sortable.create(tv2,{
+            ghostClass: 'ghost'
+        });
+        Sortable.create(tv3,{
+            ghostClass: 'ghost'
+        });
+
+
+
+
+
+        //上传视频组件，elem元素节点
+        var uploadFun = function (elem) {
+            upload.render({
+                elem:elem,
+                url:'/manage/thumb/upload',
+                accept: 'video',
+                done:function (res) {
+                    //查看兄弟节点上个视频编号,视频数量,当前时间线编号
+                    var sort = elem.prev().data('sort')?elem.prev().data('sort'):0;sort++;
+                    var video_num = elem.siblings('.layui-card').length;
+                    var tv_sort = elem.parents('.layui-tab-item').data('sort');
+                    var video_html = `<div class="layui-card layui-inline" style="text-align: center" data-sort="${sort}">
+                                    <div class=""><video controls width="300px"  height="150px" src="${res.url}"></video></div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">视频名称${video_num+1}：</label>
+                                        <div class="layui-input-inline">
+                                            <input type="hidden" name="${tv_sort}[${sort}][tv]" value="${tv_sort}">
+                                            <input type="hidden" name="${tv_sort}[${sort}][video_sort]" value="${sort}">
+                                            <input type="hidden" name="${tv_sort}[${sort}][video_url]" value="${res.url}">
+                                            <input type="text" name="${tv_sort}[${sort}][video_name]" value="" class="layui-input" placeholder="视频名称">
+                                        </div>
+                                    </div>
+                                    <button class="layui-btn layui-btn-sm layui-btn-danger video-del">删除视频</button>
+                                </div>`;
+                    elem.before(video_html);
+                }
+            });
+        }
+
+        //实例已有HTML上传组件
+        $('.upload-video').each(function () {
+            var that = $(this);
+            that.one('mouseenter',function () {
+                console.log('原始HTML实例')
+                uploadFun(that);
+            })
+        })
+
+        //移除视频
+        $('.layui-form').on('click','.video-del',function () {
+            $(this).parent('.layui-card').remove();
+        })
+
+        form.on('submit(save)',function (data) {
+            var index = layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
+            $.ajax({
+                url:'add_action',
+                type:'post',
+                data:data.field,
+                dataType: "json",
+                success:function (res) {
+                    layer.close(index);
+                    layer.msg(res.msg,{time:2000},function () {
+                        // window.location.href='?today='+lesson_date;
+                        $('.layui-this').trigger('click');
+                    });
+
+                }
+            })
+        })
+
+    })
+</script>

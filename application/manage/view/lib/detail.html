@@ -1,0 +1,258 @@
+{include file="layout/header" /}
+<div class="layui-card">
+    <div class="layui-card-body" >
+        <div class="">
+            <div class="layui-tab layui-tab-brief" lay-filter="desc">
+                <ul class="layui-tab-title">
+                    <li class="layui-this" data-type="base" onclick="javascript:window.location.reload()">基本信息</li>
+                    {if !empty($data.id)}
+                    <li data-type="ctrl">控制端信息</li>
+                    <li data-type="action">动作管理</li>
+                    <li data-type="timeline">TV时间线设置</li>
+                    {/if}
+                </ul>
+            </div>
+            <div class="layui-tab-content" style="min-height: 400px">
+                <div class="layui-tab-item layui-show desc">
+                    <div class="layui-form" id="FormIdA" url="{:url('')}">
+
+                        <input type="hidden" name="id" value="{$data.id}">
+
+                        <div class="layui-form-item layui-row ">
+                            <label class="layui-form-label">LOGO</label>
+                            <div class="layui-input-block">
+                                <img class="upload-img-box" data-tips-image src="{$data.logo?:'/images/public/default.png'}" style="max-width: 200px;max-height: 200px" alt="预览图">
+                                <button type="button" class="layui-btn" data-file="img">上传</button>
+                                <input type="hidden" name="logo" value="{$data.logo}">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-row">
+                            <label class="layui-form-label">课程名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" name="name" placeholder="请输入课程名称"
+                                       lay-verify="required" value="{$data.name}" style="width: 230px;">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-row">
+                            <label class="layui-form-label">英文名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" name="name_eng" placeholder="请输入课程英文名称"
+                                       lay-verify="" value="{$data.name_eng}" style="width: 230px;">
+                            </div>
+                        </div>
+                        <br/>
+
+                        <!--<fieldset class="layui-elem-field layui-field-title">
+                            <legend>控制端显示</legend>
+                        </fieldset>
+                        <div class="layui-form-item layui-row">
+                            <label class="layui-form-label">课程说明</label>
+                            <div class="layui-input-block lesson_desc">
+                                {if empty($data['desc'])}
+                                {php}$data['desc'] = [''];{/php}
+                                {else}
+                                {php}$data['desc'] = json_decode($data['desc'],true);{/php}
+                                {/if}
+                                {foreach $data.desc as $k=>$v}
+                                <div class="lesson_desc_item">
+                                    <div class="layui-inline" style="width: 42%">
+                                        <textarea class="layui-textarea" name="desc[{$k}]" cols="10" rows="2">{$v}</textarea>
+                                    </div>
+                                    <div class="layui-inline layui-btn-group">
+                                        <button class="layui-btn layui-btn-normal layui-btn-sm up"><i class="layui-icon layui-icon-up"></i></button>
+                                        <button class="layui-btn layui-btn-normal layui-btn-sm down"><i class="layui-icon layui-icon-down"></i></button>
+                                        <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-danger del"><i class="layui-icon layui-icon-delete"></i></button>
+                                        <button class="layui-btn layui-btn-normal layui-btn-sm add"><i class="layui-icon layui-icon-add-1"></i></button>
+                                    </div>
+                                </div>
+                                {/foreach}
+
+                            </div>
+                        </div>-->
+
+                        <br/>
+                        <fieldset class="layui-elem-field layui-field-title">
+                            <legend>小程序课程详情设置</legend>
+
+                        </fieldset>
+                        <div class="layui-form-item layui-row">
+                            <label class="layui-form-label">适应人群</label>
+                            <div class="layui-input-inline" style="width: 40%" >
+                                <div class="tags">
+                                    <input type="text" name="" id="inputTags1" placeholder="回车生成标签">
+                                </div>
+                            </div>
+                            <div class="layui-input-inline" style="width: 40%">
+                                <div class="tags">
+                                    <input type="text" name="" id="inputTags2" placeholder="回车生成标签">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-row">
+                            <label class="layui-form-label">训练描述</label>
+                            <div class="layui-input-inline" style="width: 40%">
+                                <textarea class="layui-textarea" name="train_desc" cols="10" rows="2">{$data.train_desc}</textarea>
+                            </div>
+                            <div class="layui-input-inline" style="width: 40%">
+                                <textarea class="layui-textarea" name="train_desc_eng" cols="10" rows="2" placeholder="英文">{$data.train_desc_eng}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-row">
+                            <label class="layui-form-label">训练效果</label>
+                            <div class="layui-input-inline" style="width: 40%">
+                                <textarea class="layui-textarea" name="train_effect" cols="10" rows="2">{$data.train_effect}</textarea>
+                            </div>
+                            <div class="layui-input-inline" style="width: 40%">
+                                <textarea class="layui-textarea" name="train_effect_eng" cols="10" rows="2" placeholder="英文">{$data.train_effect_eng}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-row">
+                            <label class="layui-form-label">注意事项</label>
+                            <div class="layui-input-inline" style="width: 40%">
+                                <textarea class="layui-textarea" name="note" cols="10" rows="2">{$data.note}</textarea>
+                            </div>
+                            <div class="layui-input-inline" style="width: 40%">
+                                <textarea class="layui-textarea" name="note_eng" cols="10" rows="2" placeholder="英文">{$data.note_eng}</textarea>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="layui-form-item layui-row ">
+                            <label class="layui-form-label"></label>
+                            <button class="layui-btn" lay-submit="save" lay-filter="save">保存</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
+
+<script>
+    layui.use(['element','form','layer','jquery','inputTags'],function () {
+        var form = layui.form,
+            layer = layui.layer,
+            element = layui.element,
+            $ = layui.jquery,
+            inputTags = layui.inputTags;
+
+        var lesson_tags = '{$data.tags}';
+        if (lesson_tags==''){
+            lesson_tags = [];
+        } else {
+            lesson_tags = lesson_tags.split(',');
+        }
+
+        var lesson_tags_eng = '{$data.tags_eng}';
+        if (lesson_tags_eng==''){
+            lesson_tags_eng = [];
+        } else {
+            lesson_tags_eng = lesson_tags_eng.split(',');
+        }
+
+        var tags1 = inputTags.render({
+            elem:'#inputTags1',//定义输入框input对象
+            content: lesson_tags,//默认标签
+            aldaBtn: false,//是否开启获取所有数据的按钮
+            done: function(value){ //回车后的回调
+                // $('[name="inputTags1"]').val(this.content.join());
+                // console.log(this.content);
+            }
+        })
+
+        var tags2 = inputTags.render({
+            elem:'#inputTags2',//定义输入框input对象
+            content: lesson_tags_eng,//默认标签
+            aldaBtn: false,//是否开启获取所有数据的按钮
+            done: function(value){ //回车后的回调
+                // $('[name="inputTags2"]').val(this.content.join());
+                // console.log(this.content);
+            }
+        })
+
+        $('.lesson_desc').on('click','.add',function () {
+            var key = new Date().getTime();
+            var html = `<div class="lesson_desc_item">
+                            <div class="layui-inline" style="width: 42%">
+                                <textarea class="layui-textarea" name="desc[${key}]" cols="10" rows="2"></textarea>
+                            </div>
+                            <div class="layui-inline layui-btn-group">
+                                <button class="layui-btn layui-btn-sm up"><i class="layui-icon layui-icon-up"></i></button>
+                                <button class="layui-btn layui-btn-sm down"><i class="layui-icon layui-icon-down"></i></button>
+                                <button class="layui-btn layui-btn-sm layui-btn-danger del"><i class="layui-icon layui-icon-delete"></i></button>
+                                <button class="layui-btn layui-btn-sm add"><i class="layui-icon layui-icon-add-1"></i></button>
+                            </div>
+                        </div>`;
+            $('.lesson_desc').append(html);
+        })
+
+        $('.lesson_desc').on('click','.del',function () {
+            if($('.lesson_desc_item').length==1){
+                $('textarea[name^="lesson_desc"]').val('');
+            }else {
+                $(this).parents('.lesson_desc_item').remove();
+            }
+        })
+
+        $('.lesson_desc').on('click','.up',function () {
+            var parentsDiv = $(this).parents(".lesson_desc_item");
+            var prev = parentsDiv.prev();
+            if(prev.html()!=undefined){
+                //prev.before(parentsDiv);
+                prev.fadeOut("fast",function(){
+                    $(this).before(parentsDiv);
+                }).fadeIn();
+            }
+        })
+
+        $('.lesson_desc').on('click','.down',function () {
+            var parentsDiv = $(this).parents(".lesson_desc_item");
+            var next = parentsDiv.next();
+            if(next.html()!=undefined){
+                //next.after(parentsDiv);
+                next.fadeOut("fast",function(){
+                    $(this).after(parentsDiv);
+                }).fadeIn();
+            }
+        })
+
+        form.on('submit(save)',function (data) {
+            data.field.tags = tags1.config.content.join();
+            data.field.tags_eng = tags2.config.content.join();
+            var index = layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
+            $.ajax({
+                url:'detail',
+                type:'post',
+                data:data.field,
+                dataType: "json",
+                success:function (res) {
+                    layer.close(index);
+                    layer.msg(res.msg,{time:2000},function () {
+                        $('.layui-this').trigger('click');
+                    });
+
+                }
+            })
+        })
+
+        var lesson_id='{$data.id}';
+
+        element.on('tab(desc)', function(){
+            if(this.getAttribute('data-type')!='base'){
+                get_html(lesson_id,this.getAttribute('data-type'));
+            }
+        });
+
+        function get_html(lesson_id,type='base') {
+            $.get('add_'+type,{id:lesson_id},function (res) {
+                $('.desc').html(res);
+            })
+        }
+    })
+</script>

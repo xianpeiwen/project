@@ -247,7 +247,6 @@ function mkdirs($dir, $mode = 0777)
     //微信小程序获取access_token
     function get_access_token($appid,$secret)
     {
-
         $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appid}&secret={$secret}";
         return $data = curl_get($url);
     }
@@ -320,7 +319,6 @@ function mkdirs($dir, $mode = 0777)
     }
     function api_notice_increment($url, $data)
     {
-
         $curl = curl_init(); // 启动一个CURL会话      
         curl_setopt($curl, CURLOPT_URL, $url); // 要访问的地址
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // 对认证证书来源的检测
@@ -374,3 +372,25 @@ function pp($data,$option=1){
     }
 }
 
+function sysconf($name, $value = null)
+{
+    static $config = [];
+    if ($value !== null) {
+        list($config, $data) = [[], ['name' => $name, 'value' => $value]];
+        return \app\api\service\Tools::save('setting', $data, 'name');
+    }
+    if (empty($config)) {
+        $config = \think\Db::name('setting')->column('name,value');
+    }
+    return isset($config[$name]) ? $config[$name] : '';
+}
+
+//生成订单号
+function makeOrderNo(){
+    $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
+    $orderSn =
+        $yCode[intval(date('Y')) - 2017] . strtoupper(dechex(date('m'))) . date(
+            'd') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf(
+            '%02d', rand(0, 99));
+    return $orderSn;
+}

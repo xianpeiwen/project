@@ -45,42 +45,44 @@
 
 			<div class="layui-main mag0">
 
-				<a href="#" class="logo" style="font-family:'仿宋'"><i class="layui-icon">&#xe672;</i>{$adminTitle}</a>
+				<a href="#" class="logo" >
+					<img src="https://f45new.sda-internet.com/images/public/logo-f45.png" width="126" height="50">
+				</a>
 
 				<!-- 显示/隐藏菜单 -->
 
 				<a href="javascript:;" class="seraph hideMenu icon-caidan"></a>
 
-				<!-- 顶级菜单 -->
+				 <!--顶级菜单-->
 
-				<ul class="layui-nav mobileTopLevelMenus" mobile>
+				<!--<ul class="layui-nav mobileTopLevelMenus" mobile>-->
 
-					<li class="layui-nav-item" data-menu="contentManagement">
+					<!--<li class="layui-nav-item" data-menu="contentManagement">-->
 
-						<a href="javascript:;"><i class="seraph icon-caidan"></i><cite style="font-family:'仿宋'"><i class="layui-icon">&#xe672;</i>{$adminTitle}</cite></a>
+						<!--<a href="javascript:;"><i class="seraph icon-caidan"></i><cite style="font-family:'仿宋'"><i class="layui-icon">&#xe672;</i>{$adminTitle}</cite></a>-->
 
-						<dl class="layui-nav-child">
-							{volist name="authRule" id="vo" key="k"}
-								<dd {if condition="$k eq 1"}class="layui-this"{/if} data-menu="contentz{$vo.id}"><a href="javascript:;"><i class="layui-icon" data-icon="{$vo.icon}">{$vo.icon}</i><cite>{$vo.title}</cite></a></dd>
-							{/volist}
-						</dl>
+						<!--<dl class="layui-nav-child">-->
+							<!--{volist name="authRule" id="vo" key="k"}-->
+								<!--<dd {if condition="$k eq 1"}class="layui-this"{/if} data-menu="contentz{$vo.id}"><a href="javascript:;"><i class="layui-icon" data-icon="{$vo.icon}">{$vo.icon}</i><cite>{$vo.title}</cite></a></dd>-->
+							<!--{/volist}-->
+						<!--</dl>-->
 
-					</li>
+					<!--</li>-->
 
-				</ul>
+				<!--</ul>-->
 
-				<ul class="layui-nav topLevelMenus" pc>
-					{volist name="authRule" id="vo" key="k"}
-						{if condition="$k eq 1"}
-							<li class="layui-nav-item layui-this"  data-menu="contentz{$vo.id}">
-						{else /}
-							<li class="layui-nav-item "  data-menu="contentz{$vo.id}">
-						{/if}
-							<a href="javascript:;"><i class="layui-icon" data-icon="{$vo.icon}">{$vo.icon}</i><cite>{$vo.title}</cite></a>
+				<!--<ul class="layui-nav topLevelMenus" pc>-->
+					<!--{volist name="authRule" id="vo" key="k"}-->
+						<!--{if condition="$k eq 1"}-->
+							<!--<li class="layui-nav-item layui-this"  data-menu="contentz{$vo.id}">-->
+						<!--{else /}-->
+							<!--<li class="layui-nav-item "  data-menu="contentz{$vo.id}">-->
+						<!--{/if}-->
+							<!--<a href="javascript:;"><i class="layui-icon" data-icon="{$vo.icon}">{$vo.icon}</i><cite>{$vo.title}</cite></a>-->
 
-						</li>
-					{/volist}
-				</ul>
+						<!--</li>-->
+					<!--{/volist}-->
+				<!--</ul>-->
 
 				<!-- 天气信息 -->
 
@@ -128,13 +130,13 @@
 
 					<li class="layui-nav-item" pc>
 
-						<a href="javascript:;" class="clearCache"><i class="layui-icon" data-icon="&#xe640;">&#xe640;</i><cite>清除缓存</cite><span class="layui-badge-dot"></span></a>
+						<a href="javascript:;" class="clearCache"><i class="layui-icon" data-icon="&#xe640;">&#xe640;</i><cite>Clear Cache</cite><span class="layui-badge-dot"></span></a>
 
 					</li>
 
 					<li class="layui-nav-item lockcms" pc>
 
-						<a href="javascript:;"><i class="seraph icon-lock"></i><cite>锁屏</cite></a>
+						<a href="javascript:;"><i class="seraph icon-lock"></i><cite>Lock</cite></a>
 
 					</li>
 
@@ -174,7 +176,7 @@
 				
 				<a class="img" title="我的头像" ><img src="/images/{$adminImg.img.image_path}{$adminImg.img.image_name}" class="userAvatar"></a>
 
-				<p>你好！<span class="userName">{$adminImg.admin.admin_name}</span>, 欢迎登录</p>
+				<p>Hello <span class="userName">{$adminImg.admin.admin_name}</span>, Welcome</p>
 
 			</div>
 
@@ -250,14 +252,26 @@
 		</div>
 
 		<!-- 右侧内容 -->
-
+		<style>
+			.top_tab li{
+				background-color: #FFF;
+				border-radius: 5px;
+				margin-right: 5px;
+				margin-top: 5px;
+			}
+			.closeBox{
+				margin-top: 5px;
+				border-radius: 5px;
+				margin-right: 9px;
+			}
+		</style>
 		<div class="layui-body layui-form">
 
-			<div class="layui-tab mag0" lay-filter="bodyTab" id="top_tabs_box">
+			<div class="layui-tab mag0" lay-filter="bodyTab" id="top_tabs_box" style="background: #1b1c2e;">
 
 				<ul class="layui-tab-title top_tab" id="top_tabs">
 
-					<li class="layui-this" lay-id=""><i class="layui-icon">&#xe68e;</i> <cite>后台首页</cite></li>
+					<li class="layui-this" lay-id="" style="margin-left: 9px;"><i class="layui-icon">&#xe68e;</i> <cite>Home</cite></li>
 
 				</ul>
 
@@ -265,15 +279,15 @@
 
 				  <li class="layui-nav-item">
 
-				    <a href="javascript:;"><i class="layui-icon caozuo">&#xe643;</i> 页面操作</a>
+				    <a href="javascript:;"><i class="layui-icon caozuo">&#xe643;</i> Page Option</a>
 
 				    <dl class="layui-nav-child">
 
-					  <dd><a href="javascript:;" class="refresh refreshThis"><i class="layui-icon">&#x1002;</i> 刷新当前</a></dd>
+					  <dd><a href="javascript:;" class="refresh refreshThis"><i class="layui-icon">&#x1002;</i> Refresh</a></dd>
 
-				      <dd><a href="javascript:;" class="closePageOther"><i class="seraph icon-prohibit"></i> 关闭其他</a></dd>
+				      <dd><a href="javascript:;" class="closePageOther"><i class="seraph icon-prohibit"></i> Close Other</a></dd>
 
-				      <dd><a href="javascript:;" class="closePageAll"><i class="seraph icon-guanbi"></i> 关闭全部</a></dd>
+				      <dd><a href="javascript:;" class="closePageAll"><i class="seraph icon-guanbi"></i> Close All</a></dd>
 
 				    </dl>
 
@@ -297,12 +311,12 @@
 
 		<!-- 底部 -->
 
-		<div class="layui-footer footer">
+		<!--<div class="layui-footer footer">-->
 
-			<p><span>copyright @2018-2019 闪搭科技（{$adminTitle}项目组）</span>　　<!-- <a onclick="donation()" class="layui-btn layui-btn-danger layui-btn-sm">捐赠作者</a> -->
-			</p>
+			<!--<p><span>copyright @2018-2019 闪搭科技（{$adminTitle}项目组）</span>　　&lt;!&ndash; <a onclick="donation()" class="layui-btn layui-btn-danger layui-btn-sm">捐赠作者</a> &ndash;&gt;-->
+			<!--</p>-->
 
-		</div>
+		<!--</div>-->
 
 	</div>
 

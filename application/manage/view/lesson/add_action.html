@@ -83,17 +83,20 @@
                     </ul>
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show" data-sort="1">
-                            <div class="layui-form-item layui-input-inline">
-                                <select name="lesson_ac_tv1type" lay-verify="required">
-                                    <option value="" {if $data.lesson_ac_tv1type==''}selected{/if}>请选择屏幕类型</option>
-                                    <option value="1" {if $data.lesson_ac_tv1type==1}selected{/if}>横排</option>
-                                    <option value="2" {if $data.lesson_ac_tv1type==2}selected{/if}>宫格</option>
-                                </select>
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <select name="lesson_ac_tv1type" lay-verify="required">
+                                        <option value="" {if $data.lesson_ac_tv1type==''}selected{/if}>请选择屏幕类型</option>
+                                        <option value="1" {if $data.lesson_ac_tv1type==1}selected{/if}>横排</option>
+                                        <option value="2" {if $data.lesson_ac_tv1type==2}selected{/if}>宫格</option>
+                                    </select>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">(单个TV，横排≤3，宫格≤9)</div>
                             </div>
-                            <blockquote class="layui-elem-quote">
+                            <blockquote class="layui-elem-quote" id="tv1">
                                 {if !empty($data.tv1)}
                                 {foreach $data.tv1 as $k1=>$v1}
-                                <div class="layui-card layui-inline" style="text-align: center" data-sort="1">
+                                <div class="layui-card layui-inline" style="text-align: center" data-sort="{$k1+1}">
                                     <div class=""><video controls width="300px"  height="150px" src="{$v1.video_url?:''}"></video></div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">视频名称{$k1+1}：</label>
@@ -112,17 +115,20 @@
                             </blockquote>
                         </div>
                         <div class="layui-tab-item" data-sort="2">
-                            <div class="layui-form-item layui-input-inline">
-                                <select name="lesson_ac_tv2type" lay-verify="required">
-                                    <option value="" {if $data.lesson_ac_tv2type==''}selected{/if}>请选择屏幕类型</option>
-                                    <option value="1" {if $data.lesson_ac_tv2type==1}selected{/if}>横排</option>
-                                    <option value="2" {if $data.lesson_ac_tv2type==2}selected{/if}>宫格</option>
-                                </select>
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <select name="lesson_ac_tv2type" lay-verify="required">
+                                        <option value="" {if $data.lesson_ac_tv2type==''}selected{/if}>请选择屏幕类型</option>
+                                        <option value="1" {if $data.lesson_ac_tv2type==1}selected{/if}>横排</option>
+                                        <option value="2" {if $data.lesson_ac_tv2type==2}selected{/if}>宫格</option>
+                                    </select>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">(单个TV，横排≤3，宫格≤9)</div>
                             </div>
-                            <blockquote class="layui-elem-quote">
+                            <blockquote class="layui-elem-quote" id="tv2">
                                 {if !empty($data.tv2)}
                                 {foreach $data.tv2 as $k2=>$v2}
-                                <div class="layui-card layui-inline" style="text-align: center" data-sort="1">
+                                <div class="layui-card layui-inline" style="text-align: center" data-sort="{$k2+1}">
                                     <div class=""><video controls width="300px"  height="150px" src="{$v2.video_url?:''}"></video></div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">视频名称{$k2+1}：</label>
@@ -141,17 +147,20 @@
                             </blockquote>
                         </div>
                         <div class="layui-tab-item" data-sort="3">
-                            <div class="layui-form-item layui-input-inline">
-                                <select name="lesson_ac_tv3type" lay-verify="required">
-                                    <option value="" {if $data.lesson_ac_tv3type==''}selected{/if}>请选择屏幕类型</option>
-                                    <option value="1" {if $data.lesson_ac_tv3type==1}selected{/if}>横排</option>
-                                    <option value="2" {if $data.lesson_ac_tv3type==2}selected{/if}>宫格</option>
-                                </select>
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <select name="lesson_ac_tv3type" lay-verify="required">
+                                        <option value="" {if $data.lesson_ac_tv3type==''}selected{/if}>请选择屏幕类型</option>
+                                        <option value="1" {if $data.lesson_ac_tv3type==1}selected{/if}>横排</option>
+                                        <option value="2" {if $data.lesson_ac_tv3type==2}selected{/if}>宫格</option>
+                                    </select>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">(单个TV，横排≤3，宫格≤9)</div>
                             </div>
-                            <blockquote class="layui-elem-quote">
+                            <blockquote class="layui-elem-quote" id="tv3">
                                 {if !empty($data.tv3)}
                                 {foreach $data.tv3 as $k3=>$v3}
-                                <div class="layui-card layui-inline" style="text-align: center" data-sort="1">
+                                <div class="layui-card layui-inline" style="text-align: center" data-sort="{$k3+1}">
                                     <div class=""><video controls width="300px"  height="150px" src="{$v3.video_url?:''}"></video></div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">视频名称{$k3+1}：</label>
@@ -180,10 +189,23 @@
 </div>
 </div>
 <script>
-    layui.use(['form','upload'],function () {
+    layui.use(['form','upload','jquery'],function () {
         var form = layui.form,
-        upload = layui.upload;
+        upload = layui.upload,
+        $ = layui.jquery;
         form.render();
+
+        Sortable.create(tv1,{
+            ghostClass: 'ghost'
+        });
+        Sortable.create(tv2,{
+            ghostClass: 'ghost'
+        });
+        Sortable.create(tv3,{
+            ghostClass: 'ghost'
+        });
+
+
 
         //图片上传
         upload.render({
@@ -254,6 +276,7 @@
                 success:function (res) {
                     layer.close(index);
                     layer.msg(res.msg,{time:2000},function () {
+                        // window.location.href='?today='+lesson_date;
                         $('.layui-this').trigger('click');
                     });
 

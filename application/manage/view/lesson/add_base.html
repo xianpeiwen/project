@@ -4,7 +4,7 @@
     <div class="layui-form-item layui-row ">
         <label class="layui-form-label">日期</label>
         <div class="layui-input-block">
-            <input type="text" class="layui-input layui-bg-gray" readonly name="lesson_date" value="{$data.lesson_date?:$lesson_date}">
+            <input type="text" class="layui-input layui-bg-gray" readonly name="lesson_date" value="{$data.lesson_date?:$lesson_date}" style="width: 230px;">
         </div>
     </div>
     <div class="layui-form-item layui-row ">
@@ -12,7 +12,7 @@
         <div class="layui-input-block">
             <!--<button type="button" class="layui-btn" id="test1">上传图片</button>-->
             <div class="layui-upload-list">
-                <img class="layui-upload-img" src="{$data.lesson_logo}" width="100" height="100" id="demo1">
+                <img class="layui-upload-img" src="{$data.lesson_logo?:'/images/public/default.png'}" style="width: 100px;height: 100px;" id="demo1">
                 <p id="demoText"></p>
                 <input type="hidden" name="lesson_logo" value="{$data.lesson_logo}">
             </div>
@@ -23,16 +23,20 @@
         <label class="layui-form-label">课程名称</label>
         <div class="layui-input-block">
             <input type="text" class="layui-input" name="lesson_name" placeholder="请输入课程名称"
-                   lay-verify="required" value="{$data.lesson_name}">
+                   lay-verify="required" value="{$data.lesson_name}" style="width: 230px;">
         </div>
     </div>
     <div class="layui-form-item layui-row">
         <label class="layui-form-label">英文名称</label>
         <div class="layui-input-block">
             <input type="text" class="layui-input" name="lesson_name_eng" placeholder="请输入课程英文名称"
-                   lay-verify="" value="{$data.lesson_name_eng}">
+                   lay-verify="" value="{$data.lesson_name_eng}" style="width: 230px;">
         </div>
     </div>
+    <br/>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>控制端显示</legend>
+    </fieldset>
     <div class="layui-form-item layui-row">
         <label class="layui-form-label">课程说明</label>
         <div class="layui-input-block lesson_desc">
@@ -43,18 +47,66 @@
             {/if}
             {foreach $data.lesson_desc as $k=>$v}
             <div class="lesson_desc_item">
-                <div class="layui-inline" style="width: 70%">
+                <div class="layui-inline" style="width: 42%">
                     <textarea class="layui-textarea" name="lesson_desc[{$k}]" cols="10" rows="2">{$v}</textarea>
                 </div>
                 <div class="layui-inline layui-btn-group">
-                    <button class="layui-btn layui-btn-sm up"><i class="layui-icon layui-icon-up"></i></button>
-                    <button class="layui-btn layui-btn-sm down"><i class="layui-icon layui-icon-down"></i></button>
-                    <button class="layui-btn layui-btn-sm layui-btn-danger del"><i class="layui-icon layui-icon-delete"></i></button>
-                    <button class="layui-btn layui-btn-sm add"><i class="layui-icon layui-icon-add-1"></i></button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm up"><i class="layui-icon layui-icon-up"></i></button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm down"><i class="layui-icon layui-icon-down"></i></button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-danger del"><i class="layui-icon layui-icon-delete"></i></button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm add"><i class="layui-icon layui-icon-add-1"></i></button>
                 </div>
             </div>
             {/foreach}
 
+        </div>
+    </div>
+    <br/>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>小程序课程详情设置</legend>
+
+    </fieldset>
+    <div class="layui-form-item layui-row">
+        <label class="layui-form-label">适应人群</label>
+        <div class="layui-input-inline" style="width: 40%" >
+            <div class="tags">
+                <input type="text" name="" id="inputTags1" placeholder="回车生成标签">
+            </div>
+        </div>
+        <div class="layui-input-inline" style="width: 40%">
+            <div class="tags">
+                <input type="text" name="" id="inputTags2" placeholder="回车生成标签">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-row">
+        <label class="layui-form-label">训练描述</label>
+        <div class="layui-input-inline" style="width: 40%">
+            <textarea class="layui-textarea" name="lesson_train_desc" cols="10" rows="2">{$data.lesson_train_desc}</textarea>
+        </div>
+        <div class="layui-input-inline" style="width: 40%">
+            <textarea class="layui-textarea" name="lesson_train_desc_eng" cols="10" rows="2" placeholder="英文">{$data.lesson_train_desc_eng}</textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-row">
+        <label class="layui-form-label">训练效果</label>
+        <div class="layui-input-inline" style="width: 40%">
+            <textarea class="layui-textarea" name="lesson_train_effect" cols="10" rows="2">{$data.lesson_train_effect}</textarea>
+        </div>
+        <div class="layui-input-inline" style="width: 40%">
+            <textarea class="layui-textarea" name="lesson_train_effect_eng" cols="10" rows="2" placeholder="英文">{$data.lesson_train_effect_eng}</textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-row">
+        <label class="layui-form-label">注意事项</label>
+        <div class="layui-input-inline" style="width: 40%">
+            <textarea class="layui-textarea" name="lesson_note" cols="10" rows="2">{$data.lesson_note}</textarea>
+        </div>
+        <div class="layui-input-inline" style="width: 40%">
+            <textarea class="layui-textarea" name="lesson_note_eng" cols="10" rows="2" placeholder="英文">{$data.lesson_note_eng}</textarea>
         </div>
     </div>
 
@@ -66,15 +118,49 @@
     </div>
 </div>
 <script>
-    layui.use(['form', 'common','jquery','upload','element','laydate'], function () {
+    layui.use(['form', 'common','jquery','upload','element','laydate','inputTags'], function () {
         var element = layui.element,
             $ = layui.jquery,
             form = layui.form,
             common = layui.common,
             layer = layui.layer,
             upload = layui.upload,
-            laydate = layui.laydate;
+            laydate = layui.laydate,
+            inputTags = layui.inputTags;
         form.render();
+        var lesson_tags = '{$data.lesson_tags}';
+        if (lesson_tags==''){
+            lesson_tags = [];
+        } else {
+            lesson_tags = lesson_tags.split(',');
+        }
+
+        var lesson_tags_eng = '{$data.lesson_tags_eng}';
+        if (lesson_tags_eng==''){
+            lesson_tags_eng = [];
+        } else {
+            lesson_tags_eng = lesson_tags_eng.split(',');
+        }
+
+        var tags1 = inputTags.render({
+            elem:'#inputTags1',//定义输入框input对象
+            content: lesson_tags,//默认标签
+            aldaBtn: false,//是否开启获取所有数据的按钮
+            done: function(value){ //回车后的回调
+                // $('[name="inputTags1"]').val(this.content.join());
+                // console.log(this.content);
+            }
+        })
+
+        var tags2 = inputTags.render({
+            elem:'#inputTags2',//定义输入框input对象
+            content: lesson_tags_eng,//默认标签
+            aldaBtn: false,//是否开启获取所有数据的按钮
+            done: function(value){ //回车后的回调
+                // $('[name="inputTags2"]').val(this.content.join());
+                // console.log(this.content);
+            }
+        })
 
         //普通图片上传
         var uploadInst = upload.render({
@@ -108,7 +194,7 @@
         $('.lesson_desc').on('click','.add',function () {
             var key = new Date().getTime();
             var html = `<div class="lesson_desc_item">
-                            <div class="layui-inline" style="width: 70%">
+                            <div class="layui-inline" style="width: 42%">
                                 <textarea class="layui-textarea" name="lesson_desc[${key}]" cols="10" rows="2"></textarea>
                             </div>
                             <div class="layui-inline layui-btn-group">
@@ -152,6 +238,8 @@
         })
 
         form.on('submit(save)',function (data) {
+            data.field.lesson_tags = tags1.config.content.join();
+            data.field.lesson_tags_eng = tags2.config.content.join();
             var index = layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
             $.ajax({
                 url:'add_base',
@@ -161,6 +249,7 @@
                 success:function (res) {
                     layer.close(index);
                     layer.msg(res.msg,{time:2000},function () {
+                        window.location.href='?today='+lesson_date;
                         $('.layui-this').trigger('click');
                     });
 

@@ -52,13 +52,13 @@
 			{literal}
 			<script type="text/html" id="user_card">
 				{{#if(d.user_end_at!='out_of_date'){}}
-				<span class="layui-badge layui-bg-blue">时间卡有效期：{{d.user_end_at}}</span><br>
+				<span class="layui-badge layui-bg-blue">时间卡：{{d.user_end_at}}</span><br>
 				{{#}}}
 				<span class="layui-badge layui-bg-green">钱包：{{d.user_balance}} 元</span>
 			</script>
 
 			<script type="text/html" id="action">
-				<a class="layui-btn layui-btn-xs" lay-event="record" >会员购买记录</a>
+				<a class="layui-btn layui-btn-xs" data-modal="record?id={{d.user_id}}" data-title="会员记录">会员购买记录</a>
 				<a class="layui-btn layui-btn-xs" data-modal="edit?id={{d.user_id}}" data-title="编辑会员信息">编辑</a>
 				<!-- <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已启用</a> -->
 				<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>

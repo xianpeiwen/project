@@ -1,0 +1,176 @@
+<div class="layui-form" id="FormIdA" url="{:url('')}">
+    <input type="hidden" name="id" value="{$data.id}">
+    <div class="layui-form-item layui-row">
+        <label class="layui-form-label" style="width: 8%">课程说明</label>
+        <div class="layui-input-inline lesson_desc" style="width: 60%">
+            {if empty($data['desc'])}
+            {php}$data['desc'] = [''];{/php}
+            {else}
+            {php}$data['desc'] = json_decode($data['desc'],true);{/php}
+            {/if}
+            {foreach $data.desc as $k=>$v}
+            <div class="lesson_desc_item">
+                <div class="layui-inline" style="width: 50%">
+                    <textarea class="layui-textarea" name="desc[{$k}]" cols="10" rows="2">{$v}</textarea>
+                </div>
+                <div class="layui-inline layui-btn-group">
+                    <button class="layui-btn layui-btn-normal layui-btn-sm up"><i class="layui-icon layui-icon-up"></i></button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm down"><i class="layui-icon layui-icon-down"></i></button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-danger del"><i class="layui-icon layui-icon-delete"></i></button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm add"><i class="layui-icon layui-icon-add-1"></i></button>
+                </div>
+            </div>
+            {/foreach}
+
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-row ">
+        <label class="layui-form-label" style="width: 8%">强调视频 <br><span class="layui-word-aux">（HIGHLIGHTS）</span></label>
+        <div class="layui-input-inline">
+            <button type="button" class="layui-btn" id="video"><i class="layui-icon layui-icon-video"></i>上传视频</button>
+            <input type="hidden" name="highlights" value="{$data.highlights}">
+            <br>
+            <video style="margin-top: 10px;" width="400px" height="200px" id="video_box" controls src="{$data.highlights}"></video>
+
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-row">
+        <label class="layui-form-label" style="width: 8%">课程介绍视频 <br><span class="layui-word-aux">（PIPELINE）</span></label>
+        <div class="layui-input-inline">
+            <button type="button" class="layui-btn" id="video2"><i class="layui-icon layui-icon-video"></i>上传视频</button>
+            <input type="hidden" name="pipeline" value="{$data.pipeline}">
+            <br>
+            <video style="margin-top: 10px;" width="400px" height="200px" id="video_box2" controls src="{$data.pipeline}"></video>
+
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 8%;">移动GIF</label>
+        <div class="layui-input-inline">
+            <button type="button" class="layui-btn" id="test2">图片上传</button>
+            <input type="hidden" name="movement" value="{$data.movement}">
+            <br>
+            <img class="upload-img" src="{$data.movement}" style="margin-top: 10px;max-width: 400px;max-height: 200px" alt="预览图">
+        </div>
+    </div>
+    <hr>
+    <div class="layui-form-item layui-row ">
+        <label class="layui-form-label" style="width: 8%"></label>
+        <button class="layui-btn" lay-submit="save" lay-filter="save">保存</button>
+        <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+    </div>
+</div>
+<script>
+    layui.use(['form', 'common','jquery','upload','element','laydate'], function () {
+        var element = layui.element,
+            $ = layui.jquery,
+            form = layui.form,
+            layer = layui.layer,
+            upload = layui.upload,
+            laydate = layui.laydate;
+        form.render();
+
+        $('.lesson_desc').on('click','.add',function () {
+            var key = new Date().getTime();
+            var html = `<div class="lesson_desc_item">
+                            <div class="layui-inline" style="width: 50%">
+                                <textarea class="layui-textarea" name="desc[${key}]" cols="10" rows="2"></textarea>
+                            </div>
+                            <div class="layui-inline layui-btn-group">
+                                <button class="layui-btn layui-btn-sm up"><i class="layui-icon layui-icon-up"></i></button>
+                                <button class="layui-btn layui-btn-sm down"><i class="layui-icon layui-icon-down"></i></button>
+                                <button class="layui-btn layui-btn-sm layui-btn-danger del"><i class="layui-icon layui-icon-delete"></i></button>
+                                <button class="layui-btn layui-btn-sm add"><i class="layui-icon layui-icon-add-1"></i></button>
+                            </div>
+                        </div>`;
+            $('.lesson_desc').append(html);
+        })
+
+        $('.lesson_desc').on('click','.del',function () {
+            if($('.lesson_desc_item').length==1){
+                $('textarea[name^="lesson_desc"]').val('');
+            }else {
+                $(this).parents('.lesson_desc_item').remove();
+            }
+        })
+
+        $('.lesson_desc').on('click','.up',function () {
+            var parentsDiv = $(this).parents(".lesson_desc_item");
+            var prev = parentsDiv.prev();
+            if(prev.html()!=undefined){
+                //prev.before(parentsDiv);
+                prev.fadeOut("fast",function(){
+                    $(this).before(parentsDiv);
+                }).fadeIn();
+            }
+        })
+
+        $('.lesson_desc').on('click','.down',function () {
+            var parentsDiv = $(this).parents(".lesson_desc_item");
+            var next = parentsDiv.next();
+            if(next.html()!=undefined){
+                //next.after(parentsDiv);
+                next.fadeOut("fast",function(){
+                    $(this).after(parentsDiv);
+                }).fadeIn();
+            }
+        })
+
+        upload.render({
+            elem:'#video',
+            url:'/manage/thumb/upload',
+            accept: 'video',
+            done:function (res) {
+                $('#video_box').attr('src',res.url);
+                $('input[name="highlights"]').val(res.url);
+            }
+        })
+
+        upload.render({
+            elem:'#video2',
+            url:'/manage/thumb/upload',
+            accept: 'video',
+            done:function (res) {
+                $('#video_box2').attr('src',res.url);
+                $('input[name="pipeline"]').val(res.url);
+            }
+        })
+
+        //图片上传
+        upload.render({
+            elem: '#test2'
+            ,url: '/manage/thumb/upload'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('.upload-img').attr('src', result);
+                });
+            }
+            ,done: function(res){
+                //上传完毕
+                $('#test2').siblings('input[type="hidden"]').val(res.url);
+            }
+        });
+
+        form.on('submit(save)',function (data) {
+            var index = layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
+            $.ajax({
+                url:'add_ctrl',
+                type:'post',
+                data:data.field,
+                dataType: "json",
+                success:function (res) {
+                    layer.close(index);
+                    layer.msg(res.msg,{time:2000},function () {
+                        // window.location.href='?today='+lesson_date;
+                        $('.layui-this').trigger('click');
+                    });
+                }
+            })
+        })
+    });
+
+</script>

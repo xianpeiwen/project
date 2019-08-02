@@ -1,20 +1,21 @@
-<tr style="height: 150px">
+<tr style="height: 100px">
     <th style="text-align: center" width="50" id="pre" data-date="{$data[0]['lesson_date']}"><i class="layui-icon">&#xe603;</i></th>
     {foreach $data as $v}
-    <th style="text-align: center" data-today="{$v.today}" data-id="{$v.lesson_id}" data-date="{$v.lesson_date}" class="lesson">
-        <div class="layui-card">
-            <div class="layui-card-header">
-                {$v.week}/{$v.lesson_date}
-            </div>
+    <th style="text-align: center;" width="150" data-today="{$v.today}" data-id="{$v.lesson_id}" data-date="{$v.lesson_date}" class="lesson">
+        <div class="layui-card lessonSelect {if $v.today=='today'}lesson-active{/if}">
+            <!--<div class="layui-card-header">-->
+            <p>{$v.week}</p>
+            <p>{$v.lesson_date}</p>
+            <!--</div>-->
 
-            <div class="layui-card-body" style="height: 140px">
+            <div class="layui-card-body" style="height: 90px">
                 {if !empty($v.lesson_id)}
-                <img src="{$v.lesson_logo}" alt="" width="100px" height="100px"><br><br>
+                <img src="{$v.lesson_logo}" width="60px" height="60px"><br>
                 <p style="height: 20px">
                     {$v.lesson_name}
                 </p>
                 {else}
-                <i class="layui-icon" style="font-size: 50px; color: #009688;line-height: 140px">&#xe61f;</i>
+                <i class="layui-icon" style="font-size: 50px; color: #e1e1e1;line-height: 90px">&#xe654;</i>
                 {/if}
             </div>
         </div>

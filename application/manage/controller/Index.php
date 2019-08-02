@@ -23,9 +23,39 @@ class Index extends Base
         return $this->fetch();
     }
 
-    public function  page()
+    public function page()
     {
+        //统计数据
+        $user = Db::name('user')->where('wx_auth',1)->count('*');
+        $agent = Db::name('user')->count('*');
 
+        //课程
+        $start = mktime(0,0,0,date('m'),date('d')-date('w'),date('Y'));
+        $db = Db::name('lesson')->whereBetween('lesson_date',[date('Y-m-d',$start),date('Y-m-d',$start+(86400*6))])->select();
+        $list = [
+            ['lesson_date'=>date('Y-m-d',$start),'week'=>'Sunday'],
+            ['lesson_date'=>date('Y-m-d',$start+86400),'week'=>'Monday'],
+            ['lesson_date'=>date('Y-m-d',$start+(86400*2)),'week'=>'Tuesday'],
+            ['lesson_date'=>date('Y-m-d',$start+(86400*3)),'week'=>'Wednesday'],
+            ['lesson_date'=>date('Y-m-d',$start+(86400*4)),'week'=>'Thursday'],
+            ['lesson_date'=>date('Y-m-d',$start+(86400*5)),'week'=>'Friday'],
+            ['lesson_date'=>date('Y-m-d',$start+(86400*6)),'week'=>'Saturday'],
+        ];
+        foreach ($list as $k=>$v){
+            foreach ($db as $kk=>$vv){
+                if ($vv['lesson_date']==$v['lesson_date']){
+                    $list[$k] = array_merge($vv,$v);
+                }
+                if ($v['lesson_date']==date('Y-m-d',time())){
+                    $list[$k]['today'] = 'today';
+                }
+            }
+        }
+        $this->assign([
+            'user_count'=>$user,
+            'agent_count'=>$agent,
+            'lesson_list'=>$list
+        ]);
         return $this->fetch();
     }
 

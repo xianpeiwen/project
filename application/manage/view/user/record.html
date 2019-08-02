@@ -1,0 +1,331 @@
+{include file="layout/header" /}
+<style>
+    .labelMessage{
+        width: 480px;
+        text-align: left;
+    }
+    .layui-form-item{
+        margin-bottom: 0;
+    }
+    .layui-col-md6{
+        margin-top: 5px;
+        border-top: 1px solid #efefef;
+        border-bottom: 1px solid #efefef;
+    }
+
+</style>
+<body class="childrenBody" style="background-color:#F2F2F2;">
+<div class="layui-card">
+    <div class="layui-card-body">
+        <ul class="layui-timeline">
+            <li class="layui-timeline-item">
+                <i class="layui-icon layui-timeline-axis"></i>
+                <div class="layui-timeline-content layui-text">
+                    <h3 class="layui-timeline-title">创建时间：{$user.create_at}
+                        {if $user.user_is_free==1}
+                        <span class="layui-badge layui-bg-blue">7天已领取</span>
+                        {/if}
+                    </h3>
+                </div>
+            </li>
+        </ul>
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md6" style="border-left:1px solid #efefef;">
+                <div class="layui-form" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">微信昵称：</label>
+                        <div class="layui-input-block">
+                            <label class="layui-form-label labelMessage"><span style="color:#0099e6;">
+                                {$user.user_nickname}
+                            </span></label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">钱包总额：</label>
+                        <div class="layui-input-block">
+                            <label class="layui-form-label labelMessage"><span style="color:#0099e6;">
+                                {$user.user_balance}
+                            </span></label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">时间卡：</label>
+                        <div class="layui-input-block">
+                            <label class="layui-form-label labelMessage"><span style="color:#0099e6;">
+
+                            </span></label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">手 机 号：</label>
+                        <div class="layui-input-block">
+                            <label class="layui-form-label labelMessage"><span style="color:#0099e6;">
+                                {$user.user_phone}
+                            </span></label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所属门店：</label>
+                        <div class="layui-input-block">
+                            <label class="layui-form-label labelMessage"><span style="color:#0099e6;">
+                                {if $user.agent}
+                                {$user.agent.agent_name}
+                                {/if}
+                            </span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6" style="border-left:1px solid #efefef;border-right:1px solid #efefef;padding-bottom: 9px;">
+                <div class="layui-form" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分享码：</label>
+                        <div class="layui-input-block">
+                            <label class="layui-form-label labelMessage">
+                                {$user.user_share_code}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">上级会员：</label>
+                        <div class="layui-input-block">
+                            <label class="layui-form-label labelMessage">
+                                {if $user.puser}
+                                {$user.puser.user_nickname},
+                                {$user.puser.user_phone}
+                                {/if}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态：</label>
+                        <div class="layui-input-block">
+                            <label class="layui-form-label labelMessage">
+                                {if $user.user_status==1}
+                                <span class="layui-badge layui-bg-green">正常</span>
+                                {elseif $user.user_status==0}
+                                <span class="layui-badge layui-bg-black">黑名单</span>
+                                {/if}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">最近访问：</label>
+                        <div class="layui-input-block">
+                            <label class="layui-form-label labelMessage">
+                                {$user.user_last_login}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-block">
+                            <label class="layui-form-label labelMessage">
+                                <span style="color:#009688;"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-input-block" style="margin-left:0px;margin-top:15px;">
+            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this" onclick="javascript:window.location.reload();">购买记录</li>
+                    <li>预约记录</li>
+                    <li>目标记录</li>
+                    <li>会员下级</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <table id="tableList" lay-filter="tableList"></table>
+                        {literal}
+                        <script type="text/html" id="card_type">
+                            {{#if(d.card_type==1){}}
+                            <span class="layui-badge layui-bg-blue">时间卡：{{d.user_end_at}}</span><br>
+                            {{#}}}
+                            <span class="layui-badge layui-bg-green">钱包：{{d.user_balance}} 元</span>
+                        </script>
+
+                        {/literal}
+
+                    </div>
+                    <div class="layui-tab-item">
+                        <table class="layui-table" id="bookMessage">
+                            <colgroup>
+                                <col width="100">
+                                <col width="100">
+                                <col width="100">
+                                <col width="100">
+                                <col width="100">
+                            </colgroup>
+                            <thead>
+                                <tr class="headerStyle">
+                                    <th>课程名称、时间</th>
+                                    <th>预约时间</th>
+                                    <th>预约门店</th>
+                                    <th>扣费信息</th>
+                                    <th>点名状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td align="center">
+                                        课程名称
+                                        <br/>
+                                        2019-07-31 周三
+                                    </td>
+                                    <td align="center">
+                                        2019-07-31 14:34:37
+                                    </td>
+                                    <td align="center">金穗店</td>
+                                    <td align="center">
+                                        <span class="layui-badge layui-bg-green">钱包：-75</span>
+                                        <span class="layui-badge layui-bg-blue">时间卡：剩余10天</span>
+                                    </td>
+                                    <td align="center">
+                                        <span class="layui-badge layui-bg-green">已点名</span>
+                                        <span class="layui-badge layui-bg-blue">未点名</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="layui-tab-item">
+                        <table class="layui-table" id="targetMessage">
+                            <colgroup>
+                                <col width="100">
+                                <col width="100">
+                                <col width="100">
+                                <col width="100">
+
+                            </colgroup>
+                            <thead>
+                                <tr class="headerStyle">
+                                    <th>周数</th>
+                                    <th>当天体重</th>
+                                    <th>当天体脂</th>
+                                    <th>记录时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4" style="background-color: #f1f1f1;">
+                                        《8周记录》起始体重：00KG ，起始体脂：BFR < 00%
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center">
+                                        第一周
+                                    </td>
+                                    <td align="center">
+                                        00KG
+                                    </td>
+                                    <td align="center">
+                                        BFR < 00%
+                                    </td>
+                                    <td align="center">
+                                        2019-07-31 周三
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center">
+                                        第二周
+                                    </td>
+                                    <td align="center">
+                                        00KG
+                                    </td>
+                                    <td align="center">
+                                        BFR < 00%
+                                    </td>
+                                    <td align="center">
+                                        2019-07-31 周三
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="background-color: #f1f1f1;">
+                                        《8周记录》起始体重：00KG ，起始体脂：BFR < 00%
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center">
+                                        第一周
+                                    </td>
+                                    <td align="center">
+                                        00KG
+                                    </td>
+                                    <td align="center">
+                                        BFR < 00%
+                                    </td>
+                                    <td align="center">
+                                        2019-07-31 周三
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center">
+                                        第二周
+                                    </td>
+                                    <td align="center">
+                                        00KG
+                                    </td>
+                                    <td align="center">
+                                        BFR < 00%
+                                    </td>
+                                    <td align="center">
+                                        2019-07-31 周三
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+<script>
+    layui.use(['table','element','layer','jquery'],function () {
+        var table = layui.table,
+            element = layui.element,
+            layer = layui.layer,
+            $ = layui.jquery;
+
+        var buy_tables = table.render({
+            elem:'#tableList',
+            url:'order',
+            page: true , //开启分页
+            limits : [10,20,30],
+            limit : 10,
+            height : "full-215",
+            where:{uid:'{$user.user_id}'},
+            cols:[[ //表头
+                {field: 'order_no', title: '财务ID',align:'center'},
+                {field: 'card_type', title: '购买类型',align:'center',templet:function (d) {
+                        if( d.card_type == 1){
+                            return '<div><span class="layui-badge layui-bg-blue">时间卡：'+d.card_name+'</span></div>';
+                        }else if(d.card_type == 2){
+                            return '<div><span class="layui-badge layui-bg-green">充值：'+d.pay_price+'</span></div>';
+                        }else{
+                            return '<div><span class="layui-badge layui-bg-gray">'+d.card_name+'</span></div>';
+                        }
+                    }},
+                {field: 'pay_price', title: '金额',align:'center'},
+                {field: 'pay_type', title: '购买方式',align:'center',templet:function (d) {
+                        if( d.pay_type == 1){
+                            return '<div><span class="layui-badge layui-bg-green">小程序</span></div>';
+                        }else if(d.pay_type == 2){
+                            return '<div><span class="layui-badge layui-bg-blue">支付宝</span></div>';
+                        }
+                    }},
+                {title: '购买类型',align:'center',templet:'#card_type'},
+
+                {field: 'pay_at',title: '购买时间',align:'center'}
+            ]]
+        })
+    })
+</script>

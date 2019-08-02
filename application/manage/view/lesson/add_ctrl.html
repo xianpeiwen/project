@@ -98,6 +98,7 @@
                 success:function (res) {
                     layer.close(index);
                     layer.msg(res.msg,{time:2000},function () {
+                        // window.location.href='?today='+lesson_date;
                         $('.layui-this').trigger('click');
                     });
                 }

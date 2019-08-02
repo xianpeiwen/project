@@ -19,10 +19,12 @@ class Card extends Base
         $count = Db::name($this->table)->count('*');
         $tab1 = Db::name($this->table)->where('card_type', 1)->count('*');
         $tab2 = Db::name($this->table)->where('card_type', 2)->count('*');
+        $tab3 = Db::name($this->table)->where('card_type', 3)->count('*');
         $this->assign([
             'count'=>$count,
             'tab1'=>$tab1,
             'tab2'=>$tab2,
+            'tab3'=>$tab3,
         ]);
         return view();
     }
@@ -34,11 +36,25 @@ class Card extends Base
     public function forbid()
     {
         $post = $this->request->post();
-        if (Db::name('card')->where('card_id',$post['id'])->update(['card_status'=>$post['status']])){
+        //体验卡
+        $card = Db::name($this->table)->where('card_id',$post['id'])->find();
+        if ($card['card_type']==3){
+            if ($card['card_status']==1){
+                Db::name($this->table)->where('card_id',$post['id'])->update(['card_status'=>0]);
+            }else{
+                Db::name($this->table)->where('card_type',3)->update(['card_status'=>0]);
+                Db::name($this->table)->where('card_id',$post['id'])->update(['card_status'=>1]);
+            }
             $this->success('更改成功');
+
         }else{
-            $this->error('更改失败');
+            if (Db::name('card')->where('card_id',$post['id'])->update(['card_status'=>$post['status']])){
+                $this->success('更改成功');
+            }else{
+                $this->error('更改失败');
+            }
         }
+
     }
 
     public function del()
@@ -84,8 +100,10 @@ class Card extends Base
             $card_type = $this->request->get('card_type');
             if ($card_type==2){
                 $tpl = 'add2';
-            }else{
+            }elseif($card_type==1){
                 $tpl = 'add';
+            }elseif($card_type==3){
+                $tpl = 'add3';
             }
             if ($id){
                 $data = Db::name($this->table)->where('card_id',$id)->find();
@@ -95,29 +113,39 @@ class Card extends Base
         }elseif ($this->request->isPost()){
             $post = $this->request->post();
             $data = [];
-            foreach (['card_name','card_name_eng','card_price','card_type','card_day_limit'] as $v){
-                if (empty($post[$v])){
-                    $this->error('缺少必要信息'.$v);
+            //体验卡
+            if ($post['card_type']==3){
+                empty($post['card_times_limit']) && $this->error('请输入体验次数');
+                $data['card_times_limit'] = $post['card_times_limit'];
+                $data['card_status'] = 0;
+            }else{
+                foreach (['card_name','card_name_eng','card_price','card_type','card_day_limit'] as $v){
+                    if (empty($post[$v])){
+                        $this->error('缺少必要信息'.$v);
+                    }
                 }
+                if ($post['card_price']<=0){
+                    $this->error('价格需大于0');
+                }
+                if ($post['card_type']==2){
+                    (empty($post['card_cost']) || $post['card_cost']<=0 || $post['card_discount']<0) && $this->error('请输入每次消费扣除金额');
+                    $data['card_cost'] = $post['card_cost'];
+                    $data['card_discount'] = $post['card_discount'];
+                }
+                $data['card_status'] = $post['status'];
+                $data['card_desc'] = $post['card_desc'];
+                $data['card_desc_eng'] = $post['card_desc_eng'];
+                $data['sort'] = $post['sort'];
             }
-            if ($post['card_price']<=0){
-                $this->error('价格需大于0');
-            }
-            if ($post['card_type']==2){
-                (empty($post['card_cost']) || $post['card_cost']<=0 || $post['card_discount']<0) && $this->error('请输入每次消费扣除金额');
-                $data['card_cost'] = $post['card_cost'];
-                $data['card_discount'] = $post['card_discount'];
-            }
+
 
             $data['card_name'] = $post['card_name'];
             $data['card_name_eng'] = $post['card_name_eng'];
             $data['card_price'] = $post['card_price'];
             $data['card_type'] = $post['card_type'];
             $data['card_day_limit'] = $post['card_day_limit'];
-            $data['card_status'] = $post['status'];
-            $data['card_desc'] = $post['card_desc'];
-            $data['card_desc_eng'] = $post['card_desc_eng'];
-            $data['sort'] = $post['sort'];
+
+
             if ($post['card_id']){
                 if (Db::name($this->table)->where('card_id', $post['card_id'])->update($data)) {
                     $this->success('更新成功');

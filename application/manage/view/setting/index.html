@@ -4,20 +4,41 @@
 	<div class="layui-card-header">小程序配置</div>
 
 	<div class="layui-card-body">
-
-		<div class="layui-form" style="width:80%;" id="FormIdA" url="{:url('manage/setting/add')}">
-			<div class="layui-form-item layui-row ">
-				<label class="layui-form-label">logo</label>
+		<div class="layui-form" id="FormIdA" url="{:url('manage/setting/add')}">
+			<div class="layui-form-item">
+				<label class="layui-form-label">LOGO</label>
 				<div class="layui-input-block">
-					<div class="user_pic" id="editimg" style="margin: 10px;width: 202px;height: 202px;border: 1px solid #ccc">
-						<img id="srcimgurl" style="width: 200px;height: 200px" src="/images/{$data.mini_logo}" alt="">
-						<input type="hidden" class="layui-input" id="imgShow"  name="mini_logo" value="">
-					</div>
+					<button type="button" class="layui-btn" data-file="img">上传</button>
+					<input type="hidden" name="" value="">
+					<br>
+					<img class="upload-img-box" data-tips-image src="" style="margin-top: 10px;max-width: 200px;max-height: 200px" alt="预览图">
 				</div>
 			</div>
-			<div class="layui-form-item layui-row ">
+
+			<div class="layui-form-item">
+				<label class="layui-form-label" style="text-align: right">视频<span class="layui-word-aux"></span></label>
+				<div class="layui-input-block">
+					<button type="button" class="layui-btn" data-file="video"><i class="layui-icon layui-icon-video"></i>上传视频</button>
+					<input type="hidden" name="lesson_highlights" value="{$data.lesson_highlights}">
+					<br>
+					<video style="margin-top: 10px;" width="400px" height="200px" class="upload-video-box" controls src=""></video>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">首页广告图</label>
+				<div class="layui-input-block">
+					<button type="button" class="layui-btn" data-file="img">上传</button>
+					<input type="hidden" name="" value="">
+					<br>
+					<img class="upload-img-box" data-tips-image src="" style="margin-top: 10px;max-width: 200px;max-height: 200px" alt="预览图">
+				</div>
+			</div>
+
+
+			<div class="layui-form-item">
 				<label class="layui-form-label">上传</label>
-				<button class="layui-btn layui-btn-primary sdthumb">button</button>
+				<button class="layui-btn layui-btn-primary sdthumb" data-modal="/manage/thumb/index" data-title="图片管理" data-width="80%" data-height="90%">button</button>
 			</div>
 			<hr>
 			<div class="layui-form-item ">
@@ -29,46 +50,16 @@
 	</div>
 </div>
 </body>
-<script type="text/javascript" src="__STATIC__admin/setting.js" ></script>
 <script>
 
-    layui.use(['form','croppers','common','jquery'], function () {
-        var $ = layui.jquery
-            ,form = layui.form
-            ,croppers = layui.croppers
-            ,common = layui.common
-            ,layer= layui.layer;
-        //创建一个头像上传组件
-        croppers.render({
-            elem: '#editimg'
-            ,saveW:200     //保存宽度
-            ,saveH:200
-            ,mark:1/1    //选取比例
-            ,area:['40%', '60%']  //弹窗宽度
-            ,format:'base64'				//直接上传：upload  ，返回 base64编码：base64
-            // ,url: "uploadImg"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
-            ,done: function(url){ //上传完毕回调
-                $("#imgShow").val(url);
-                $("#srcimgurl").attr('src',url);
-            }
-        });
+    layui.use(['form','common','jquery','upload'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            common = layui.common,
+            layer= layui.layer;
 
 
-        common.JKFormSubmit('FormIdA','addSetting');
-        $('.sdthumb').click(function () {
-            var index = layui.layer.open({
-                title : '图片管理',
-                type : 2,
-                content : "/manage/thumb/index",
-                area: ['90%', '90%'],
-                success : function(layero, index){
-                    setTimeout(function(){
-                        layui.layer.tips('点击此处返回', '.layui-layer-setwin .layui-layer-close', {
-                            tips: 3
-                        });
-                    },500)
-                }
-            })
-        })
+        // common.JKFormSubmit('FormIdA','addSetting');
+
     });
 </script>

@@ -1,32 +1,199 @@
 {include file="layout/header" /}
-<body class="childrenBody">
-	<!-- <blockquote class="layui-elem-quote layui-bg-green">
-		<div id="nowTime"></div>
-	</blockquote>
-	<div style="text-align: center;">
-		<img style="width: 50%"  src="/images/public/timg.jpg" alt="">
-	</div>
-	<script type="text/javascript" src="__STATIC__admin/index/page/page.js"></script> -->
-    {assign name="var" value="123" /}
-	<div class="layui-form-item">
-        <label class="layui-form-label">头像</label>
-        <div class="layui-input-inline">
-            <input type="text" name="head" lay-verify="required" id="inputimgurl" placeholder="图片地址" value="123.jpg" class="layui-input">
+<style>
+    .layui-card{
+     border-radius: 5px;
+     box-shadow: 0 1px 5px 0 rgba(0,0,0,0.04);
+    }
+    .layui-tab-card{
+        box-shadow:none;
+        border:none;
+        margin-top: 0;
+    }
+    .layui-tab-content{
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .selectMessageUL{
+        border:none;
+        border-radius: 5px;
+        width: 187px;
+    }
+    .selectMessageUL2{
+        border:none;
+        border-radius: 5px;
+
+    }
+    .selectMessageUL li{
+        border-radius: 5px;
+    }
+    .selectMessageUL2 li{
+        border-radius: 5px;
+    }
+</style>
+<body class="childrenBody" style="background-color:#F2F2F2;">
+    <!-- 切换-->
+    <div class="selectMessage">
+        <div class="layui-tab layui-tab-card">
+            <ul class="layui-tab-title selectMessageUL" style="    background-color: #1b1c2e;color:#FFF;">
+                <li class="layui-this">统计数据</li>
+                <li>课程预览</li>
+            </ul>
+            <div class="layui-tab-content" >
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-row layui-col-space10">
+                        <div class="layui-col-md2">
+                            <div class="layui-card" style="height: 150px;line-height: 150px;">
+                                <div class="layui-card-body">
+                                    <div class="layui-col-md5" style="height: 100%; line-height: 120px;">
+                                        <img src="https://x.soysea.com/images/public/home-manADD.png" width="56" height="56">
+                                    </div>
+                                    <div class="layui-col-md7" style="height: 100%;">
+                                        <div style="margin-top: 20px;">
+                                            <span style="font-size: 24px;">{$user_count?:0}</span><br>
+                                            <span style="color:#747474;">总用户数</span><br/>
+                                            <span style="color:#747474;">门店数 <span style="font-size: 14px;">{$agent_count?:0}</span></span><br/>
+                                            <span style="color:#747474;">教练数 <span style="font-size: 14px;">0</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-col-md2">
+                            <div class="layui-card" style="height: 150px;">
+                                <div class="layui-card-body">
+                                    <div class="layui-col-md5" style="height: 100%; line-height: 120px;">
+                                        <img src="https://x.soysea.com/images/public/Block-2.png" width="56" height="56">
+                                    </div>
+                                    <div class="layui-col-md7" style="height: 100%;">
+                                        <div style="margin-top: 20px;">
+                                            <span style="font-size: 24px;">￥0.00</span><br>
+                                            <span style="color:#747474;">今日付款金额</span><br>
+                                            <span style="color:#747474;">本周<span style="font-size: 14px;">￥0.00</span></span><br/>
+                                            <span style="color:#747474;">本月<span style="font-size: 14px;">￥0.00</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md2">
+                            <div class="layui-card" style="height: 150px;">
+                                <div class="layui-card-body">
+                                    <div class="layui-col-md5" style="height: 100%; line-height: 120px;">
+                                        <img src="https://x.soysea.com/images/public/Block-2.png" width="56" height="56">
+                                    </div>
+                                    <div class="layui-col-md7" style="height: 100%;">
+                                        <div style="margin-top: 40px;">
+                                            <span style="font-size: 24px;">￥0.00</span><br>
+                                            <span style="color:#747474;">总收入</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="layui-tab-item ">
+                    <div class="selectMessage">
+                        <div class="layui-tab layui-tab-card">
+                            <ul class="layui-tab-title selectMessageUL2" style="    background-color: #1b1c2e;color:#FFF;">
+                                {foreach $lesson_list as $v}
+                                <li class="{if $v.today=='today'}layui-this{/if}">{$v.week}</li>
+                                {/foreach}
+                            </ul>
+                            <div class="layui-tab-content" >
+                                <!--信息-->
+                                <div class="layui-tab-item layui-show">
+                                    <div class="layui-card">
+                                        <div class="layui-card-body">
+                                            <div class="layui-row layui-col-space10">
+                                                <div class="layui-col-md4" style="text-align: center;">
+                                                    <img src="https://f45new.sda-internet.com/images/upload/957d0d26f2c43ba7/acc34062c7f97371.png" width="250" height="250"/>
+                                                </div>
+                                                <div class="layui-col-md4">
+                                                    <br/>
+                                                    <h1 style="color:#5e6192;">Athletica - 20 / 10</h1><br/>
+                                                    <h2 style="color:#5e6192;">31st July 2019</h2>
+                                                </div>
+                                                <div class="layui-col-md4"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--介绍视频-->
+                                    <div class="layui-row layui-col-space10">
+                                        <div class="layui-col-md4">
+                                            <div class="layui-card">
+                                                <div class="layui-card-header">Session Highlights</div>
+                                                <div class="layui-card-body">
+                                                    <video style="margin-top: 10px;" width="100%" height="200px" id="video_box1" controls="" src=""></video>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-md4">
+                                            <div class="layui-card">
+                                                <div class="layui-card-header">Workout Information</div>
+                                                <div class="layui-card-body">
+                                                    <video style="margin-top: 10px;" width="100%" height="200px" id="video_box2" controls="" src=""></video>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-md4">
+                                            <div class="layui-card">
+                                                <div class="layui-card-header">Movement Diagram</div>
+                                                <div class="layui-card-body">
+                                                    <img src="https://f45new.sda-internet.com/images/upload/6e8df47e2f99644e/4f6ca1a958c31074.gif" style="margin-top: 10px;" width="100%" height="200px"   src=""></img>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--动作-->
+                                    <div class="layui-row layui-col-space10">
+                                        <div class="layui-col-md6">
+                                            <div class="layui-row layui-col-space10">
+                                                <div class="layui-col-md6">
+                                                    <div class="layui-card">
+                                                        <div class="layui-card-header">1 - Medicine Ball Woodchop</div>
+                                                        <div class="layui-card-body">
+                                                            <video style="margin-top: 10px;" width="100%" height="200px" id="dz_1" controls="" src=""></video>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-col-md6">
+                                                    <div class="layui-card">
+                                                        <div class="layui-card-header">2 - Mountain Climber</div>
+                                                        <div class="layui-card-body">
+                                                            <video style="margin-top: 10px;" width="100%" height="200px" id="dz_2" controls="" src=""></video>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-md6">
+                                            <div class="layui-card">
+                                                <div class="layui-card-header">课程介绍</div>
+                                                <div class="layui-card-body">
+                                                    卡片式面板面板通常用于非白色背景色的主体内<br>
+                                                    从而映衬出边框投影
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
-        <div class="layui-input-inline">
-            <div class="layui-upload-list" style="margin:0">
-                <img src="" id="srcimgurl" class="layui-upload-img">
-            </div>
-        </div>
-        <div class="layui-input-inline layui-btn-container" style="width: auto;">
-            <button class="layui-btn layui-btn-primary" id="editimg">修改图片</button >
-        </div>
-        <div class="layui-form-mid layui-word-aux">头像的尺寸限定150x150px,大小在50kb以内</div>
     </div>
-    <div>{$var|numberFormat} </div>
+
+
 </body>
 <script>
-	layui.use(['form','croppers'], function () {
+	layui.use(['form','croppers','element'], function () {
+        var element = layui.element;
         var $ = layui.jquery
             ,form = layui.form
             ,croppers = layui.croppers

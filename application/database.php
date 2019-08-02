@@ -17,9 +17,9 @@ return [
     // 数据库名
     'database'        => 'manage',
     // 用户名
-    'username'        => 'manage',
+    'username'        => 'f45',
     // 密码
-    'password'        => 'fengling',
+    'password'        => 'f45pro',
     // 端口
     'hostport'        => '3306',
     // 连接dsn

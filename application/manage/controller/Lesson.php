@@ -18,8 +18,10 @@ class Lesson extends Base
 
     public function index()
     {
-        $start = mktime(0,0,0,date('m'),date('d')-date('w'),date('Y'));
-//        $end = mktime(0,0,0,date('m'),date('d'),date('Y'));
+        $today = $this->request->get('today')?:date('Y-m-d',time());
+        //开始时间与today时间关联，开始时间为today时间的当周开始时间
+//        $start = mktime(0,0,0,date('m'),date('d')-date('w'),date('Y'));
+        $start = mktime(0,0,0,date('m',strtotime($today)),date('d',strtotime($today))-date('w',strtotime($today)),date('Y',strtotime($today)));
         $db = Db::name($this->table)->whereBetween('lesson_date',[date('Y-m-d',$start),date('Y-m-d',$start+(86400*6))])->select();
         $list = [
             ['lesson_date'=>date('Y-m-d',$start),'week'=>'周日'],
@@ -35,7 +37,7 @@ class Lesson extends Base
                 if ($vv['lesson_date']==$v['lesson_date']){
                     $list[$k] = array_merge($vv,$v);
                 }
-                if ($v['lesson_date']==date('Y-m-d',time())){
+                if ($v['lesson_date']==$today){
                     $list[$k]['today'] = 'today';
                 }
             }
@@ -45,49 +47,6 @@ class Lesson extends Base
         ]);
         return view();
     }
-
-    //废弃的
-    /*public function add()
-    {
-        if ($this->request->isPost()){
-            $post = $this->request->post();
-            $a = $post['lesson_desc'];
-            if (count($post['lesson_desc'])==1 && current($a)==''){
-                $lesson_desc = '';
-            }else{
-                $lesson_desc = json_encode(array_values($post['lesson_desc']),320);
-            }
-            $data = [
-                'lesson_date'=>$post['lesson_date'],
-                'lesson_logo'=>$post['lesson_logo'],
-                'lesson_name'=>$post['lesson_name'],
-                'lesson_name_eng'=>$post['lesson_name_eng'],
-                'lesson_desc'=>$lesson_desc,
-                'lesson_highlights'=>$post['lesson_highlights'],
-                'lesson_pipeline'=>$post['lesson_pipeline'],
-                'lesson_movement'=>$post['lesson_movement'],
-            ];
-
-            try{
-                if ($post['lesson_id']){
-                    Db::name($this->table)->where(['lesson_id'=>$post['lesson_id'],'lesson_date'=>$post['lesson_date']])->update($data);
-                }else{
-                    Db::name($this->table)->insert($data);
-                }
-            }catch (Exception $e){
-                $this->error('数据保存失败！');
-            }
-            $this->success('保存成功！');
-
-        }
-        $get = $this->request->get();
-        $data = Db::name($this->table)->where('lesson_id',$get['lesson_id'])->find();
-        $this->assign([
-            'data'=>$data,
-            'lesson_date'=>$get['lesson_date']
-        ]);
-        return view();
-    }*/
 
     //上一周下一周
     public function pre()
@@ -142,7 +101,15 @@ class Lesson extends Base
                 'lesson_logo'=>$post['lesson_logo'],
                 'lesson_name'=>$post['lesson_name'],
                 'lesson_name_eng'=>$post['lesson_name_eng'],
-                'lesson_desc'=>$lesson_desc
+                'lesson_desc'=>$lesson_desc,
+                'lesson_tags'=>$post['lesson_tags'],
+                'lesson_tags_eng'=>$post['lesson_tags_eng'],
+                'lesson_train_desc'=>$post['lesson_train_desc'],
+                'lesson_train_desc_eng'=>$post['lesson_train_desc_eng'],
+                'lesson_train_effect'=>$post['lesson_train_effect'],
+                'lesson_train_effect_eng'=>$post['lesson_train_effect_eng'],
+                'lesson_note'=>$post['lesson_note'],
+                'lesson_note_eng'=>$post['lesson_note_eng'],
             ];
 
             try{
@@ -159,7 +126,7 @@ class Lesson extends Base
         }
         $get = $this->request->get();
         $data = Db::name($this->table)
-            ->field('lesson_id,lesson_date,lesson_logo,lesson_name,lesson_name_eng,lesson_desc')
+            ->field('lesson_id,lesson_date,lesson_logo,lesson_name,lesson_name_eng,lesson_desc,lesson_tags,lesson_tags_eng,lesson_train_desc,lesson_train_desc_eng,lesson_train_effect,lesson_train_effect_eng,lesson_note,lesson_note_eng')
             ->where('lesson_id',$get['lesson_id'])->find();
         $this->assign([
             'data'=>$data,
@@ -277,7 +244,6 @@ class Lesson extends Base
         return view();
     }
 
-
     public function add_action(){
         if ($this->request->isPost()){
             $post = $this->request->post();
@@ -328,7 +294,6 @@ class Lesson extends Base
             }
             $this->success('保存成功！');
 
-            return $post;
         }
         $get = $this->request->get();
         if (empty($get['lesson_id'])){
@@ -350,5 +315,7 @@ class Lesson extends Base
         return view();
     }
 
-
+    public function chose(){
+        return view();
+    }
 }

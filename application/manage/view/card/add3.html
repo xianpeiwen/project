@@ -1,0 +1,65 @@
+{include file="layout/header" /}
+<body class="childrenBody" style="background-color:#F2F2F2;">
+
+<div class="layui-form" style="" id="FormIdA" url="{:url('add')}">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-form-item layui-row ">
+                <label class="layui-form-label">会员卡名称</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" name="card_name" placeholder="请输入会员卡名称"
+                           lay-verify="required" value="{$data.card_name}">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-row ">
+                <label class="layui-form-label">英文名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="card_name_eng" class="layui-input" lay-verify="required"
+                           placeholder="请输入会员卡英文名称" value="{$data.card_name_eng}">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-row card_day_limit">
+                <label class="layui-form-label">时限/天</label>
+                <div class="layui-input-block">
+                    <input type="text" name="card_day_limit" class="layui-input" lay-verify="required" placeholder="请输入时限/天"
+                           value="{$data.card_day_limit?:7}">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-row card_day_limit">
+                <label class="layui-form-label">次数/次</label>
+                <div class="layui-input-block">
+                    <input type="text" name="card_times_limit" class="layui-input" lay-verify="required" placeholder="请输入体验次数/次"
+                           value="{$data.card_times_limit?:3}">
+                </div>
+            </div>
+
+            <input type="hidden" class="layui-input" name="card_id" value="{$data.card_id}">
+            <input type="hidden" class="layui-input" name="card_type" value="{$data.card_type?:$Think.get.card_type}">
+
+            <div class="layui-form-item layui-row ">
+                <label class="layui-form-label"></label>
+                <button class="layui-btn" lay-submit="save" lay-filter="save">保存</button>
+                <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    layui.use(['form', 'common','jquery'], function () {
+        var $ = layui.jquery
+            , form = layui.form
+            , common = layui.common
+            , layer = layui.layer;
+
+        common.JKFormSubmit('FormIdA', 'save');
+
+    });
+
+</script>
+</body>
+</html>

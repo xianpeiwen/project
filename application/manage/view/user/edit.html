@@ -9,7 +9,7 @@
                 <div class="layui-input-block">
                     <!--<button type="button" class="layui-btn" id="test1">上传图片</button>-->
                     <div class="layui-upload-list">
-                        <img class="layui-upload-img" src="{$data.user_headimgurl}" width="100" height="100" id="demo1">
+                        <img class="layui-upload-img" src="{$data.user_headimgurl?:'/images/public/default.png'}" width="100" height="100" id="demo1">
                         <p id="demoText"></p>
                     </div>
                     <input type="hidden" name="user_headimgurl" value="{$data.user_headimgurl}">

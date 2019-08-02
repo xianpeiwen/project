@@ -1,14 +1,31 @@
 {include file="layout/header" /}
 <style>
     .lesson-active{
-        background-color:  #5FB878;
+        box-shadow: 0px 0px 20px red inset !important;
+    }
+    .lessonSelect{
+        box-shadow:none;
+        box-shadow: 0px 0px 20px #e1e1e1 inset;
+        border: 1px solid #e1e1e1;
+        border-radius: 10px;
+        width: 180px;
+    }
+    .layui-table tbody tr:hover{
+        background: #FFF;
+    }
+    .layui-table tbody th{
+        border: 0;
+        padding-bottom: 3px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
+
     }
 </style>
 <body class="childrenBody" style="background-color:#F2F2F2;">
     <div class="layui-card">
-        <div class="layui-card-header">课程列表</div>
-
-        <div class="layui-card-body"  style="min-height: 738px">
+        <div class="layui-card-header">课程列表 <span class="layui-word-aux">（新增课程时请先保存基本信息，再添加其他信息）</span></div>
+        <div class="layui-card-body"  style="padding-top: 0px;">
 
             <!--课程头部-->
             <table class="layui-table">
@@ -16,20 +33,21 @@
                 <tr style="height: 100px">
                     <th style="text-align: center" width="50" id="pre" data-date="{$data[0]['lesson_date']}"><i class="layui-icon">&#xe603;</i></th>
                     {foreach $data as $v}
-                    <th style="text-align: center" data-today="{$v.today}" data-id="{$v.lesson_id}" data-date="{$v.lesson_date}" class="lesson {if $v.today=='today'}lesson-active{/if}">
-                        <div class="layui-card">
-                            <div class="layui-card-header">
-                                {$v.week}/{$v.lesson_date}
-                            </div>
+                    <th style="text-align: center;" width="150" data-today="{$v.today}" data-id="{$v.lesson_id}" data-date="{$v.lesson_date}" class="lesson">
+                       <div class="layui-card lessonSelect {if $v.today=='today'}lesson-active{/if}">
+                            <!--<div class="layui-card-header">-->
+                           <p>{$v.week}</p>
+                           <p>{$v.lesson_date}</p>
+                            <!--</div>-->
 
                             <div class="layui-card-body" style="height: 90px">
                                 {if !empty($v.lesson_id)}
-                                <img src="{$v.lesson_logo}" width="50px" height="50px"><br><br>
+                                <img src="{$v.lesson_logo}" width="60px" height="60px"><br>
                                 <p style="height: 20px">
                                     {$v.lesson_name}
                                 </p>
                                 {else}
-                                <i class="layui-icon" style="font-size: 50px; color: #009688;line-height: 90px">&#xe61f;</i>
+                                <i class="layui-icon" data-modal="chose?date={$v.lesson_date}" data-title="{$v.lesson_date}课程选择" data-width="90%" data-height="90%" style="font-size: 50px; color: #e1e1e1;line-height: 90px">&#xe654;</i>
                                 {/if}
                             </div>
                         </div>
@@ -41,42 +59,47 @@
             </table>
 
 
-            <!--详情-->
+        </div>
+    </div>
+    <div class="layui-card">
+        <div class="layui-card-body" >
             <div class="">
                 <div class="layui-tab layui-tab-brief" lay-filter="desc">
                     <ul class="layui-tab-title">
-                        <li class="layui-this" data-type="base">基本</li>
-                        <li data-type="ctrl">控制</li>
+                        <li class="layui-this" data-type="base">基本信息</li>
+                        <li data-type="ctrl">控制端信息</li>
                         <li data-type="timeline">时间线</li>
                         <li data-type="action">动作管理</li>
                     </ul>
-                    <div class="layui-tab-content" style="min-height: 400px">
-                        <div class="layui-tab-item layui-show desc">
+                </div>
+                <div class="layui-tab-content" style="min-height: 400px">
+                    <div class="layui-tab-item layui-show desc">
 
-                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
 </body>
 </html>
+<script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
 
 <script>
+    var lesson_id='';
+    var lesson_date='';
     layui.use(['layer','element','jquery'], function(){
         var layer = layui.layer,
             $ = layui.jquery,
             element = layui.element;
-        var lesson_id='';
-        var lesson_date='';
+
         element.on('tab(desc)', function(){
             get_html(lesson_id,lesson_date,this.getAttribute('data-type'));
         });
 
-        //表单
-        if($('th[data-today="today"]')){
+        //默认选中今天
+        if($('th[data-today="today"]')[0]){
+            console.log(123);
             lesson_id = $('th[data-today="today"]').data('id');
             lesson_date = $('th[data-today="today"]').data('date');
             get_html(lesson_id,lesson_date)
@@ -86,7 +109,9 @@
         $('tbody').on('click','.lesson',function () {
             lesson_id = $(this).data('id');
             lesson_date = $(this).data('date');
-            $(this).addClass('lesson-active').siblings().removeClass('lesson-active');
+            $(this).children('.lessonSelect').addClass('lesson-active').siblings().removeClass('lesson-active');
+            $(this).siblings().children('.lessonSelect').removeClass('lesson-active');
+
             $('li[data-type="base"]').addClass('layui-this').siblings('li').removeClass('layui-this');
             get_html(lesson_id,lesson_date)
         })
@@ -96,12 +121,6 @@
                 $('.desc').html(res);
             })
         }
-
-        // function get_html(lesson_id,lesson_date) {
-        //     $.get('add',{lesson_id:lesson_id,lesson_date:lesson_date},function (res) {
-        //         $('.desc').html(res);
-        //     })
-        // }
 
         //上一周
         $('tbody').on('click','#pre',function () {

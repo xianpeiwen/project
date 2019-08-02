@@ -1,27 +1,78 @@
 {include file="layout/header" /}
-<body class="childrenBody">
+<style>
+	.img_case{
+		position: relative;
+	}
+	.img_case img{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+	.img_box{
+		width: 100%;
+		height: 100%;
+		background-size: auto 100%;
+	}
+	.img_box:hover{
+		border: 2px solid green;
+	}
+	.action_bg{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 0;
+		background: rgba(0,0,0,0.5);
+		text-align: center;
+		display: flex;
+		align-items: center;
+	}
+	.action_bg i{
+		margin: 0 auto;
+	}
+	.img_case:hover img_case_del{
+		display: block;
+	}
+	.img_case_del{
+		width: 50px;
+		height: 50px;
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		display: block;
+		display: flex;
+		align-items: center;
+	}
+	.img_case_del i{
+		width: 80%;
+		height: 80%;
+		margin: 0 auto;
+	}
+</style>
+
+<body class="childrenBody" >
 	<div class="layui-card">
 		<div class="layui-card-header">
 			<div class="layui-form">
-				<!--<div class="layui-form-item">-->
 
-					<div class="layui-input-inline">
-						<input type="text" name="title" placeholder="请输入查询信息" autocomplete="off" class="layui-input">
-					</div>
-					<div class="layui-input-inline">
-						<button class="layui-btn search" lay-submit="" lay-filter="formDemo">搜索</button>
-						<button class="layui-btn reset">重置</button>
-						<!-- <button class="layui-btn" lay-submit lay-filter="formDemo">导出XLS</button> -->
-					</div>
-					<div class="layui-input-inline" style="float:right;">
-						<a class="layui-btn layui-btn-danger" id="">删除</a>
-						<a class="layui-btn" id="editimg" >上传</a>
-					</div>
-				<!--</div>-->
+				<div class="layui-input-inline">
+					<input type="text" name="title" placeholder="请输入查询信息" autocomplete="off" class="layui-input">
+				</div>
+				<button class="layui-btn search" lay-submit="" lay-filter="formDemo">搜索</button>
+				<!--<button class="layui-btn reset">重置</button>-->
+				<div class="layui-inline" style="float:right;">
+					<a class="layui-btn layui-btn-danger" id="">删除</a>
+					<a class="layui-btn" id="editimg" >上传</a>
+				</div>
+
 			</div>
 		</div>
 	</div>
-	<div class="layui-card layui-row layui-col-space10">
+	<div class=" layui-card layui-row" id="app">
 		<div class="layui-col-md2 ">
 			<table class="layui-table" lay-skin="line">
 				<thead>
@@ -44,10 +95,22 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="layui-col-md10" style="padding: 10px">
-			{foreach $thumb as $t}
-			<img class="select-img" src="{$t.url}" width="15%" alt="">
-			{/foreach}
+		<div class="layui-col-md10">
+			<div class=" layui-card-body" >
+				{foreach $thumb as $k=>$t}
+				<div class="img_case layui-inline" style="width: 17%;height: 150px;margin:0px 10px 20px;background-color: #F2F2F2">
+					<!--<img class="select-img"  src="{$t.url}" alt="">-->
+					<div class="img_box" style='background: url("{$t.url}") no-repeat center 50%;' @click="clicks({$k})" @mouseover="move({$k})"></div>
+					<div class="action_bg" v-if="actionidx == {$k}" >
+						<i class="layui-icon layui-icon-ok" style="color: #FFFFFF;"></i>
+					</div>
+					<div class="img_case_del" v-if="moveidx == {$k}" @click="del({$k})">
+						<i class="layui-icon layui-icon-delete" style="background: blue;color: white;"></i>
+					</div>
+				</div>
+				{/foreach}
+			</div>
+
 
 		</div>
 	</div>
@@ -56,7 +119,28 @@
 		<button class="layui-btn layui-btn-normal">取消</button>
 	</div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
+	var sfn;
+    var app = new Vue({
+        el: '#app',
+        data: {
+            actionidx: -1,
+			moveidx:-1
+        },
+		methods:{
+            clicks:function(i){
+                this.actionidx = i;
+			},
+            move:function(i){
+                this.moveidx = i;
+			},
+            del:function(i){
+
+			}
+		}
+    })
+
 	layui.use(['form','croppers','upload'],function () {
         var form = layui.form,
 		layer = layui.layer,

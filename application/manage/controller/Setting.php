@@ -17,11 +17,4 @@ class Setting extends Base
         return view();
     }
 
-    public function add()
-    {
-        $post = $this->request->post();
-        $img = base64_upload($post['mini_logo'],'');
-
-        return ;
-    }
 }
